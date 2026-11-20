@@ -92,6 +92,7 @@ export const FR_TRANSLATIONS: TranslationDictionary = {
     hero: {
       eyebrow: 'HYGIÈNE PROFESSIONNELLE & PROTECTION',
       title: "Des solutions d'hygiène et de protection pour les professionnels",
+      titleAccent: 'pour les professionnels',
       subtitle:
         "Basée à Belfaa, Maroc, ABHYGO fournit aux entreprises et structures professionnelles des produits d'hygiène, consommables et Équipements de Protection Individuelle (EPI) sélectionnés pour les environnements exigeants.",
       imageAlt:
