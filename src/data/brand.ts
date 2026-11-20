@@ -12,10 +12,14 @@ export const BRAND_INFO = {
   email: 'abhygoprofessional@gmail.com',
   emailHref: 'mailto:abhygoprofessional@gmail.com',
   location: 'Belfaa, Maroc',
-  mapHref: 'https://www.google.com/maps/search/?api=1&query=Belfaa%2C+Maroc',
+  mapHref: 'https://maps.app.goo.gl/G24fcprqNjzqLHcr5?g_st=aw',
   primaryCta: 'Demander un devis',
   secondaryCta: 'Découvrir nos produits',
 } as const;
+
+export function buildWhatsAppDirectUrl(greeting: string): string {
+  return `https://wa.me/${BRAND_INFO.whatsappNumber}?text=${encodeURIComponent(greeting)}`;
+}
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 'accueil', label: 'Accueil', hash: '#accueil' },
@@ -131,7 +135,3 @@ export const B2B_PILLARS = [
       "Chaque demande fait l'objet d'une étude personnalisée selon vos quantités, vos usages et votre rythme de réapprovisionnement.",
   },
 ];
-
-export function buildWhatsAppDirectUrl(greeting: string): string {
-  return `https://wa.me/${BRAND_INFO.whatsappNumber}?text=${encodeURIComponent(greeting)}`;
-}
