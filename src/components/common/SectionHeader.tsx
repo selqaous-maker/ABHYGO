@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SectionHeaderProps {
   kicker?: string;
@@ -15,6 +16,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   align = 'left',
   className = '',
 }) => {
+  const { isRtl } = useLanguage();
+
   return (
     <div
       className={`${
@@ -22,7 +25,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       } ${className}`}
     >
       {kicker && (
-        <p className="mb-3 text-xs font-medium tracking-[0.04em] text-[#1765BD]">
+        <p
+          className={`mb-3 text-xs font-medium text-[#1765BD] ${
+            isRtl ? 'tracking-normal' : 'tracking-[0.04em]'
+          }`}
+        >
           {kicker}
         </p>
       )}

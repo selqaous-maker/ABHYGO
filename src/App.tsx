@@ -4,7 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { QuoteBasketDrawer } from './components/catalogue/QuoteBasketDrawer';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
-import { BRAND_INFO, NAV_ITEMS } from './data/brand';
+import { useLanguage } from './context/LanguageContext';
+import { NAV_ITEMS, buildWhatsAppDirectUrl } from './data/brand';
 import { SEO_BY_ROUTE } from './data/seo';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
@@ -65,8 +66,16 @@ function setMetaTag(selector: string, attribute: 'content' | 'href', value: stri
   }
 }
 
-function setCanonicalLink(href: string) {
-  let link = document.querySelector('link[rel="canonical"]');
+function setCanonicalLink(href: string | null) {
+  const existing = document.querySelector('link[rel="canonical"]');
+  if (!href) {
+    if (existing) {
+      existing.remove();
+    }
+    return;
+  }
+
+  let link = existing;
   if (!link) {
     link = document.createElement('link');
     link.setAttribute('rel', 'canonical');
@@ -83,6 +92,7 @@ export default function App() {
   const [basketItems, setBasketItems] = useState<QuoteBasketItem[]>(loadInitialBasket);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     try {
@@ -92,26 +102,40 @@ export default function App() {
     }
   }, [basketItems]);
 
-  // Dynamic route SEO: title, meta description, Open Graph, Twitter cards & canonical URL
+  // Dynamic route & language SEO: title, meta description, Open Graph, Twitter cards & clean canonical URL
   useEffect(() => {
-    const seo = SEO_BY_ROUTE[currentRoute] ?? SEO_BY_ROUTE.accueil;
+    const seo = t.seo[currentRoute] ?? t.seo.accueil;
     document.title = seo.title;
 
     const origin = window.location.origin;
-    const navMatch = NAV_ITEMS.find((item) => item.id === currentRoute);
-    const canonicalUrl =
-      currentRoute === 'accueil'
-        ? `${origin}/`
-        : `${origin}/${navMatch ? navMatch.hash : ''}`;
+    const routeUrl = new URL(SEO_BY_ROUTE[currentRoute].path, origin);
+    if (language === 'ar') routeUrl.searchParams.set('lang', 'ar');
+    const cleanUrl = routeUrl.href;
 
     setMetaTag('meta[name="description"]', 'content', seo.description);
     setMetaTag('meta[property="og:title"]', 'content', seo.title);
     setMetaTag('meta[property="og:description"]', 'content', seo.description);
-    setMetaTag('meta[property="og:url"]', 'content', canonicalUrl);
+    setMetaTag('meta[property="og:locale"]', 'content', seo.ogLocale);
+    setMetaTag('meta[property="og:locale:alternate"]', 'content', language === 'ar' ? 'fr_MA' : 'ar_MA');
+    setMetaTag('meta[property="og:image:alt"]', 'content', t.home.hero.imageAlt);
+    setMetaTag('meta[property="og:url"]', 'content', cleanUrl);
     setMetaTag('meta[name="twitter:title"]', 'content', seo.title);
     setMetaTag('meta[name="twitter:description"]', 'content', seo.description);
-    setCanonicalLink(canonicalUrl);
-  }, [currentRoute]);
+
+    setCanonicalLink(cleanUrl);
+    for (const locale of ['fr', 'ar', 'x-default']) {
+      let alternate = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${locale}"]`);
+      if (!alternate) {
+        alternate = document.createElement('link');
+        alternate.rel = 'alternate';
+        alternate.hreflang = locale;
+        document.head.appendChild(alternate);
+      }
+      const alternateUrl = new URL(SEO_BY_ROUTE[currentRoute].path, origin);
+      alternateUrl.searchParams.set('lang', locale === 'ar' ? 'ar' : 'fr');
+      alternate.href = alternateUrl.href;
+    }
+  }, [currentRoute, language, t]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -145,7 +169,11 @@ export default function App() {
       const targetItem = NAV_ITEMS.find((item) => item.id === route);
       if (targetItem && typeof window !== 'undefined') {
         if (window.location.hash !== targetItem.hash) {
-          window.history.pushState(null, '', `/${targetItem.hash}`);
+          const targetUrl = new URL(window.location.href);
+          targetUrl.pathname = '/';
+          targetUrl.searchParams.set('lang', language);
+          targetUrl.hash = targetItem.hash;
+          window.history.pushState(null, '', targetUrl);
         }
       }
 
@@ -158,7 +186,7 @@ export default function App() {
         });
       }
     },
-    [shouldReduceMotion]
+    [shouldReduceMotion, language]
   );
 
   const handleAddToBasket = useCallback((newItem: QuoteBasketItem) => {
@@ -240,12 +268,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-[#101D3B]">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-white text-[#101D3B]">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#101D3B] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white focus:outline-2 focus:outline-offset-2 focus:outline-[#23B9ED]"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#101D3B] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white focus:outline-2 focus:outline-offset-2 focus:outline-[#23B9ED]"
       >
-        Aller au contenu principal
+        {t.common.skipToContent}
       </a>
 
       <Header currentRoute={currentRoute} onNavigate={handleNavigate} />
@@ -268,19 +296,19 @@ export default function App() {
 
       {/* Discreet Mobile-Only WhatsApp Contact Affordance */}
       {!isBasketOpen && (
-        <div className="fixed bottom-4 left-4 z-30 lg:hidden">
+        <div className="fixed bottom-4 start-4 z-30 lg:hidden">
           <a
-            href={BRAND_INFO.whatsappHref}
+            href={buildWhatsAppDirectUrl(t.quoteLinks.defaultWhatsAppGreeting)}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Contacter ABHYGO sur WhatsApp"
+            aria-label={t.common.whatsappQuickAria}
             className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#101D3B]/15 bg-white/95 px-3.5 py-2 text-sm font-medium text-[#101D3B] shadow-[0_12px_28px_-10px_rgba(16,29,59,0.28)] backdrop-blur-sm transition-[border-color,color,transform] duration-150 hover:border-[#70BF35] hover:text-[#1765BD] active:scale-[0.98] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
           >
             <MessageSquare
               className="h-4 w-4 shrink-0 text-[#3D7514]"
               aria-hidden="true"
             />
-            <span className="whitespace-nowrap">WhatsApp</span>
+            <span className="whitespace-nowrap">{t.common.whatsappShort}</span>
           </a>
         </div>
       )}

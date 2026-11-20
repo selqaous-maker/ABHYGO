@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, FileText, Info, Phone, Plus } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 import { BRAND_INFO } from '../../data/brand';
 import { EpiProductItem } from '../../types/site';
 import { Button } from '../common/Button';
@@ -23,12 +24,26 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
   onRequestQuote,
 }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setActiveImageIndex(0);
   }, [product.id]);
 
+  const localized = t.epi.products[product.id];
+  const name = localized?.name ?? product.name;
+  const shortDescription = localized?.shortDescription ?? product.shortDescription;
+  const reference = localized?.reference ?? product.reference;
+  const availableSizes = localized?.availableSizes ?? product.availableSizes;
+  const material = localized?.material ?? product.material;
+  const technicalNotes = localized?.technicalNotes ?? product.technicalNotes;
+
   const activeImage = product.galleryImages[activeImageIndex] ?? product.galleryImages[0];
+  const activeImageAlt =
+    localized?.galleryAlts[activeImageIndex] ??
+    localized?.galleryAlts[0] ??
+    activeImage?.alt ??
+    name;
 
   return (
     <section className="bg-white py-10 sm:py-14 lg:py-16">
@@ -39,8 +54,8 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
           onClick={onBack}
           className="mb-8 inline-flex min-h-10 items-center gap-2 rounded-sm text-sm font-medium text-slate-600 transition-colors hover:text-[#1765BD] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1765BD]"
         >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          <span>Retour au catalogue EPI</span>
+          <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+          <span>{t.epi.detail.backToCatalogue}</span>
         </button>
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
@@ -49,10 +64,10 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
             <div className="overflow-hidden rounded-2xl border border-[#101D3B]/10 bg-[#F5F8FC]">
               <MediaFrame
                 src={activeImage?.src ?? ''}
-                alt={activeImage?.alt ?? product.name}
+                alt={activeImageAlt}
                 aspectClassName="aspect-[4/3]"
                 className="border-0 rounded-none"
-                fallbackLabel={product.name}
+                fallbackLabel={name}
                 priority
               />
             </div>
@@ -60,17 +75,18 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
             {product.galleryImages.length > 1 && (
               <div
                 role="group"
-                aria-label="Galerie d'images de l'équipement"
+                aria-label={t.epi.detail.galleryAria}
                 className="mt-4 grid grid-cols-4 gap-3"
               >
                 {product.galleryImages.map((img, idx) => {
                   const isActive = idx === activeImageIndex;
+                  const thumbAlt = localized?.galleryAlts[idx] ?? img.alt;
                   return (
                     <button
                       key={`${product.id}-thumb-${idx}`}
                       type="button"
                       onClick={() => setActiveImageIndex(idx)}
-                      aria-label={`Afficher la vue ${idx + 1}`}
+                      aria-label={`${t.epi.detail.viewImagePrefix} ${idx + 1}`}
                       aria-pressed={isActive}
                       className={`overflow-hidden rounded-lg border transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] ${
                         isActive
@@ -80,10 +96,10 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                     >
                       <MediaFrame
                         src={img.src}
-                        alt={img.alt}
+                        alt={thumbAlt}
                         aspectClassName="aspect-[4/3]"
                         className="border-0 rounded-none"
-                        fallbackLabel={`Vue ${idx + 1}`}
+                        fallbackLabel={`${t.epi.detail.viewImagePrefix} ${idx + 1}`}
                       />
                     </button>
                   );
@@ -101,70 +117,76 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                   <span aria-hidden="true" className="text-slate-400">
                     ·
                   </span>
-                  <span className="text-slate-500">Article de démonstration</span>
+                  <span className="text-slate-500">{t.epi.detail.demoItemTag}</span>
                 </>
               )}
             </div>
 
             <h2 className="mt-3 text-2xl font-bold tracking-tight text-[#101D3B] sm:text-3xl text-balance">
-              Présentation de l&apos;équipement
+              {t.epi.detail.presentationHeading}
             </h2>
 
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              {product.shortDescription}
+              {shortDescription}
             </p>
 
             {/* Transparent Notice for Placeholder Specs */}
             {product.isDemo && (
               <div className="mt-6 flex items-start gap-3 rounded-xl border border-[#1765BD]/20 bg-[#F5F8FC] p-4 text-xs leading-relaxed text-slate-700 sm:text-sm">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#1765BD]" aria-hidden="true" />
-                <p>
-                  Fiche modèle destinée à illustrer la structure produit. Aucune conformité
-                  normative, certification ou résistance particulière n&apos;est revendiquée sans
-                  documentation fabricant jointe à votre devis.
-                </p>
+                <p>{t.epi.detail.demoNotice}</p>
               </div>
             )}
 
             {/* Optional Size & Material Fields + Technical Specification Placeholders */}
             <div className="mt-6 rounded-xl border border-[#101D3B]/10 bg-[#F5F8FC]/60 p-5 sm:p-6">
               <h3 className="text-sm font-semibold text-[#101D3B]">
-                Informations techniques et caractéristiques
+                {t.epi.detail.specsHeading}
               </h3>
 
               <dl className="mt-4 divide-y divide-[#101D3B]/10 text-sm">
                 <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <dt className="text-slate-500">Référence</dt>
+                  <dt className="text-slate-500">{t.epi.detail.referenceLabel}</dt>
                   <dd className="font-[family-name:var(--font-mono)] font-medium text-[#101D3B] tabular-nums">
-                    {product.reference ?? 'À attribuer selon référence confirmée'}
+                    {reference ? (
+                      <span dir="ltr" className="inline-block">
+                        {reference}
+                      </span>
+                    ) : (
+                      t.epi.detail.referenceFallback
+                    )}
                   </dd>
                 </div>
 
                 <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <dt className="text-slate-500">Tailles / Pointures (optionnel)</dt>
+                  <dt className="text-slate-500">{t.epi.detail.sizesLabel}</dt>
                   <dd className="font-medium text-[#101D3B]">
-                    {product.availableSizes && product.availableSizes.length > 0
-                      ? product.availableSizes.join(' · ')
-                      : 'À préciser selon la demande'}
+                    {availableSizes && availableSizes.length > 0 ? (
+                      <bdi dir="ltr" className="inline-block">
+                        {availableSizes.join(' · ')}
+                      </bdi>
+                    ) : (
+                      t.epi.detail.sizesFallback
+                    )}
                   </dd>
                 </div>
 
                 <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <dt className="text-slate-500">Matière principale (optionnel)</dt>
+                  <dt className="text-slate-500">{t.epi.detail.materialLabel}</dt>
                   <dd className="font-medium text-[#101D3B]">
-                    {product.material ?? 'Selon fiche fabricant fournie sur devis'}
+                    {material ?? t.epi.detail.materialFallback}
                   </dd>
                 </div>
 
                 <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <dt className="text-slate-500">Normes &amp; niveaux de protection</dt>
+                  <dt className="text-slate-500">{t.epi.detail.normsLabel}</dt>
                   <dd className="font-medium text-[#101D3B]">
-                    {product.technicalNotes ?? 'Communiqués uniquement via documentation réelle'}
+                    {technicalNotes ?? t.epi.detail.normsFallback}
                   </dd>
                 </div>
 
                 <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <dt className="text-slate-500">Fiche technique PDF</dt>
+                  <dt className="text-slate-500">{t.epi.detail.pdfLabel}</dt>
                   <dd className="font-medium text-[#101D3B]">
                     {product.technicalSheetUrl ? (
                       <a
@@ -174,10 +196,10 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                         className="inline-flex items-center gap-1.5 rounded-sm text-[#1765BD] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                       >
                         <FileText className="h-4 w-4" aria-hidden="true" />
-                        <span>Télécharger la fiche</span>
+                        <span>{t.epi.detail.pdfDownload}</span>
                       </a>
                     ) : (
-                      'Disponible sur demande avec le devis'
+                      t.epi.detail.pdfFallback
                     )}
                   </dd>
                 </div>
@@ -199,12 +221,12 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                 {isInBasket ? (
                   <>
                     <Check className="h-4 w-4 text-[#3D7514]" aria-hidden="true" />
-                    <span>Ajouté à ma demande</span>
+                    <span>{t.epi.detail.addedToBasket}</span>
                   </>
                 ) : (
                   <>
                     <Plus className="h-4 w-4" aria-hidden="true" />
-                    <span>Ajouter à ma demande</span>
+                    <span>{t.epi.detail.addToBasket}</span>
                   </>
                 )}
               </Button>
@@ -214,8 +236,8 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                 size="lg"
                 onClick={() => onRequestQuote(product)}
               >
-                <span>{BRAND_INFO.primaryCta}</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <span>{t.brand.primaryCta}</span>
+                <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
               </Button>
 
               <a
@@ -223,7 +245,9 @@ export const EpiProductDetail: React.FC<EpiProductDetailProps> = ({
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#101D3B]/20 bg-white px-5 py-3 text-sm font-medium text-[#101D3B] whitespace-nowrap shrink-0 transition-[border-color,color,transform] duration-150 hover:-translate-y-px hover:border-[#1765BD] hover:text-[#1765BD] motion-reduce:hover:translate-y-0 tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
               >
                 <Phone className="h-4 w-4 text-[#1765BD]" aria-hidden="true" />
-                <span>{BRAND_INFO.phoneDisplay}</span>
+                <span dir="ltr" className="inline-block">
+                  {BRAND_INFO.phoneDisplay}
+                </span>
               </a>
             </div>
           </div>

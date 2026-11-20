@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Globe, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { BRAND_INFO, NAV_ITEMS } from '../../data/brand';
+import { useLanguage } from '../../context/LanguageContext';
+import { NAV_ITEMS } from '../../data/brand';
 import { PageRoute, QuoteCategory } from '../../types/site';
 import { BrandLogo } from '../common/BrandLogo';
 import { Button } from '../common/Button';
@@ -17,6 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -56,19 +58,22 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
           : 'border-[#101D3B]/10'
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
         {/* Zone 1: Brand Wordmark */}
         <a
           href="#accueil"
           onClick={(e) => handleLinkClick('accueil', e)}
-          aria-label="ABHYGO — Accueil"
+          aria-label={t.brand.header.homeAria}
           className="inline-flex items-center whitespace-nowrap shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1765BD]"
         >
           <BrandLogo variant="dark" />
         </a>
 
         {/* Zone 2: Single-line Text Navigation */}
-        <nav aria-label="Navigation principale" className="hidden lg:flex items-center gap-7">
+        <nav
+          aria-label={t.brand.header.mainNavAria}
+          className="hidden lg:flex items-center gap-5 xl:gap-7"
+        >
           {NAV_ITEMS.map((item) => {
             const isActive = currentRoute === item.id;
             return (
@@ -83,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
                     : 'text-[#101D3B]/75 hover:text-[#101D3B]'
                 }`}
               >
-                {item.label}
+                {t.brand.nav[item.id]}
                 <span
                   aria-hidden="true"
                   className={`absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full transition-opacity duration-150 ${
@@ -97,15 +102,58 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
           })}
         </nav>
 
-        {/* Zone 3: Single Primary Action + Mobile Trigger */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Zone 3: Language Switcher + Primary Action + Mobile Trigger */}
+        <div className="flex items-center gap-2.5 shrink-0 sm:gap-3">
+          <div
+            role="group"
+            aria-label={t.brand.languageSwitcher.groupAria}
+            className="hidden lg:inline-flex items-center rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC] p-0.5"
+          >
+            <button
+              type="button"
+              lang="fr"
+              aria-pressed={language === 'fr'}
+              onClick={() => setLanguage('fr')}
+              className={`min-h-8 rounded-md px-2.5 text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] ${
+                language === 'fr'
+                  ? 'bg-[#101D3B] text-white shadow-xs'
+                  : 'text-[#101D3B]/75 hover:text-[#101D3B]'
+              }`}
+            >
+              {t.brand.languageSwitcher.frLabel}
+            </button>
+            <button
+              type="button"
+              lang="ar"
+              aria-pressed={language === 'ar'}
+              onClick={() => setLanguage('ar')}
+              className={`min-h-8 rounded-md px-2.5 text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] ${
+                language === 'ar'
+                  ? 'bg-[#101D3B] text-white shadow-xs'
+                  : 'text-[#101D3B]/75 hover:text-[#101D3B]'
+              }`}
+            >
+              {t.brand.languageSwitcher.arLabel}
+            </button>
+          </div>
+
+          <button
+            type="button"
+            lang={language === 'fr' ? 'ar' : 'fr'}
+            dir="auto"
+            onClick={() => setLanguage(language === 'fr' ? 'ar' : 'fr')}
+            className="inline-flex min-h-11 items-center rounded-lg border border-[#101D3B]/15 px-2.5 text-xs font-semibold text-[#1765BD] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] lg:hidden"
+          >
+            {language === 'fr' ? 'العربية' : 'Français'}
+          </button>
+
           <div className="hidden lg:block">
             <Button
               variant="primary"
               size="sm"
               onClick={() => onNavigate('contact', 'les-deux')}
             >
-              {BRAND_INFO.primaryCta}
+              {t.brand.primaryCta}
             </Button>
           </div>
 
@@ -114,7 +162,11 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation"
-            aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-label={
+              mobileMenuOpen
+                ? t.brand.header.closeMenuAria
+                : t.brand.header.openMenuAria
+            }
             className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[#101D3B]/15 text-[#101D3B] transition-colors hover:bg-[#F5F8FC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] lg:hidden cursor-pointer"
           >
             {mobileMenuOpen ? (
@@ -137,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
             transition={{ duration: 0.16, ease: EASE_CURVE }}
             className="border-t border-[#101D3B]/10 bg-white px-4 py-4 shadow-[0_18px_36px_-18px_rgba(16,29,59,0.22)] sm:px-6 lg:hidden"
           >
-            <nav aria-label="Navigation mobile" className="flex flex-col gap-1">
+            <nav aria-label={t.brand.header.mobileNavAria} className="flex flex-col gap-1">
               {NAV_ITEMS.map((item) => {
                 const isActive = currentRoute === item.id;
                 return (
@@ -152,7 +204,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
                         : 'text-[#101D3B] hover:bg-[#F5F8FC]'
                     }`}
                   >
-                    <span>{item.label}</span>
+                    <span>{t.brand.nav[item.id]}</span>
                     {isActive && (
                       <span
                         aria-hidden="true"
@@ -164,6 +216,45 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
               })}
             </nav>
 
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#101D3B]/10 pt-4">
+              <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-600">
+                <Globe className="h-4 w-4 text-[#1765BD]" aria-hidden="true" />
+                <span>{t.brand.languageSwitcher.mobileHeading}</span>
+              </span>
+              <div
+                role="group"
+                aria-label={t.brand.languageSwitcher.groupAria}
+                className="inline-flex items-center rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC] p-0.5"
+              >
+                <button
+                  type="button"
+                  lang="fr"
+                  aria-pressed={language === 'fr'}
+                  onClick={() => setLanguage('fr')}
+                  className={`min-h-9 rounded-md px-3 text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] ${
+                    language === 'fr'
+                      ? 'bg-[#101D3B] text-white shadow-xs'
+                      : 'text-[#101D3B]/75 hover:text-[#101D3B]'
+                  }`}
+                >
+                  {t.brand.languageSwitcher.frLabel}
+                </button>
+                <button
+                  type="button"
+                  lang="ar"
+                  aria-pressed={language === 'ar'}
+                  onClick={() => setLanguage('ar')}
+                  className={`min-h-9 rounded-md px-3 text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] ${
+                    language === 'ar'
+                      ? 'bg-[#101D3B] text-white shadow-xs'
+                      : 'text-[#101D3B]/75 hover:text-[#101D3B]'
+                  }`}
+                >
+                  {t.brand.languageSwitcher.arLabel}
+                </button>
+              </div>
+            </div>
+
             <div className="mt-4 border-t border-[#101D3B]/10 pt-4">
               <Button
                 variant="primary"
@@ -174,7 +265,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
                   onNavigate('contact', 'les-deux');
                 }}
               >
-                {BRAND_INFO.primaryCta}
+                {t.brand.primaryCta}
               </Button>
             </div>
           </motion.div>

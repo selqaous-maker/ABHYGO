@@ -1,7 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowRight, ClipboardList, Trash2, X } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useLanguage } from '../../context/LanguageContext';
 import { QuoteBasketItem } from '../../types/site';
+import { getLocalizedBasketItemMeta } from '../../utils/quoteLinks';
+import {
+  formatBasketCountLabel,
+  formatBasketTriggerAria,
+} from '../../utils/countFormat';
 import { Button } from '../common/Button';
 
 interface QuoteBasketDrawerProps {
@@ -31,6 +37,42 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
   onProceedToQuote,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { isRtl, language, t } = useLanguage();
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    const background = document.getElementById('root');
+    const siblings = Array.from(background?.firstElementChild?.children ?? [])
+      .filter((element): element is HTMLElement => element instanceof HTMLElement && !element.contains(dialogRef.current));
+    const previousInert = siblings.map(element => element.inert);
+    siblings.forEach(element => { element.inert = true; });
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), [tabindex="0"]'
+      ) ?? []).filter(element => element.getClientRects().length > 0);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (event.shiftKey && (document.activeElement === first || !dialogRef.current?.contains(document.activeElement))) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !dialogRef.current?.contains(document.activeElement))) {
+        event.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener('keydown', trapFocus);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      siblings.forEach((element, index) => { element.inert = previousInert[index]; });
+      document.removeEventListener('keydown', trapFocus);
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -44,6 +86,23 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  const countLabel = formatBasketCountLabel(
+    items.length,
+    language,
+    t.basketDrawer.emptyCount,
+    t.basketDrawer.singularCount,
+    t.basketDrawer.pluralCount
+  );
+
+  const triggerAriaLabel = formatBasketTriggerAria(
+    items.length,
+    language,
+    t.basketDrawer.triggerAriaSingular,
+    t.basketDrawer.triggerAriaPlural
+  );
+
+  const slideOffset = isRtl ? '-100%' : '100%';
+
   return (
     <>
       {/* Compact Floating Basket Trigger (visible when items > 0 and drawer is closed) */}
@@ -54,18 +113,16 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.18, ease: EASE_CURVE }}
-            className="fixed bottom-4 right-4 z-30 sm:bottom-6 sm:right-6"
+            className="fixed bottom-4 end-4 z-30 sm:bottom-6 sm:end-6"
           >
             <button
               type="button"
               onClick={onOpen}
-              aria-label={`Ouvrir ma demande de devis (${items.length} article${
-                items.length > 1 ? 's' : ''
-              })`}
+              aria-label={triggerAriaLabel}
               className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#101D3B] px-3.5 py-2.5 text-sm font-medium text-white shadow-[0_14px_32px_-8px_rgba(16,29,59,0.5)] ring-1 ring-white/15 transition-[background-color,transform] duration-150 hover:-translate-y-0.5 hover:bg-[#1765BD] motion-reduce:hover:translate-y-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED] sm:gap-2.5 sm:px-4"
             >
               <ClipboardList className="h-4 w-4 text-[#23B9ED]" aria-hidden="true" />
-              <span className="whitespace-nowrap">Ma demande</span>
+              <span className="whitespace-nowrap">{t.basketDrawer.triggerLabel}</span>
               <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-md bg-[#70BF35] px-1.5 font-[family-name:var(--font-mono)] text-xs font-semibold text-[#101D3B] tabular-nums">
                 {items.length}
               </span>
@@ -78,6 +135,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
       <AnimatePresence>
         {isOpen && (
           <div
+            ref={dialogRef}
             className="fixed inset-0 z-50 flex justify-end"
             role="dialog"
             aria-modal="true"
@@ -96,9 +154,9 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
 
             {/* Panel */}
             <motion.div
-              initial={shouldReduceMotion ? false : { x: '100%' }}
+              initial={shouldReduceMotion ? false : { x: slideOffset }}
               animate={{ x: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { x: '100%' }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { x: slideOffset }}
               transition={{ duration: 0.24, ease: EASE_CURVE }}
               className="relative z-10 flex h-full w-full max-w-lg flex-col bg-white shadow-2xl"
             >
@@ -108,23 +166,17 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                     id="quote-basket-title"
                     className="text-lg font-semibold text-[#101D3B]"
                   >
-                    Ma demande de devis
+                    {t.basketDrawer.title}
                   </h2>
                   <p className="mt-0.5 text-xs text-slate-500 tabular-nums">
-                    {items.length === 0
-                      ? 'Aucun article sélectionné'
-                      : `${items.length} ${
-                          items.length > 1
-                            ? 'articles sélectionnés'
-                            : 'article sélectionné'
-                        }`}
+                    {countLabel}
                   </p>
                 </div>
 
                 <button
                   type="button"
                   onClick={onClose}
-                  aria-label="Fermer le panier de devis"
+                  aria-label={t.basketDrawer.closeAria}
                   className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#101D3B]/15 text-[#101D3B] transition-colors hover:bg-[#F5F8FC] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                 >
                   <X className="h-5 w-5" aria-hidden="true" />
@@ -139,84 +191,88 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                       aria-hidden="true"
                     />
                     <p className="mt-3 text-sm font-semibold text-[#101D3B]">
-                      Votre demande de devis est vide
+                      {t.basketDrawer.emptyTitle}
                     </p>
                     <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                      Parcourez les rubriques Produits d&apos;hygiène ou EPI pour ajouter des
-                      articles, ou rédigez directement votre demande via le formulaire.
+                      {t.basketDrawer.emptyDescription}
                     </p>
                   </div>
                 ) : (
                   <ul className="space-y-4">
-                    {items.map((item) => (
-                      <li
-                        key={item.id}
-                        className="rounded-xl border border-[#101D3B]/10 bg-[#F5F8FC]/60 p-4"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-xs font-medium text-[#1765BD]">
-                              {item.categoryLabel}
-                              {item.isDemo ? ' · Démonstration' : ''}
-                            </p>
-                            <h3 className="mt-1 text-sm font-semibold text-[#101D3B]">
-                              {item.name}
-                            </h3>
-                          </div>
+                    {items.map((item) => {
+                      const localized = getLocalizedBasketItemMeta(item, t);
+                      return (
+                        <li
+                          key={item.id}
+                          className="rounded-xl border border-[#101D3B]/10 bg-[#F5F8FC]/60 p-4"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="text-xs font-medium text-[#1765BD]">
+                                {localized.categoryLabel}
+                                {item.isDemo ? ` · ${t.common.demoTag}` : ''}
+                              </p>
+                              <h3 className="mt-1 text-sm font-semibold text-[#101D3B]">
+                                {localized.name}
+                              </h3>
+                            </div>
 
-                          <button
-                            type="button"
-                            onClick={() => onRemoveItem(item.id)}
-                            aria-label={`Retirer ${item.name}`}
-                            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-white hover:text-red-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
-                          >
-                            <Trash2 className="h-4 w-4" aria-hidden="true" />
-                          </button>
-                        </div>
-
-                        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                          <div>
-                            <label
-                              htmlFor={`basket-qty-${item.id}`}
-                              className="block text-xs font-medium text-slate-700"
+                            <button
+                              type="button"
+                              onClick={() => onRemoveItem(item.id)}
+                              aria-label={`${t.basketDrawer.removeAriaPrefix} ${localized.name}`}
+                              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-white hover:text-red-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                             >
-                              Quantité (optionnel)
-                            </label>
-                            <input
-                              id={`basket-qty-${item.id}`}
-                              type="text"
-                              value={item.quantity}
-                              onChange={(e) =>
-                                onUpdateItem(item.id, { quantity: e.target.value })
-                              }
-                              placeholder="Ex. 10 cartons, 25 unités"
-                              className="mt-1 block min-h-10 w-full rounded-lg border border-[#101D3B]/15 bg-white px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
-                            />
+                              <Trash2 className="h-4 w-4" aria-hidden="true" />
+                            </button>
                           </div>
 
-                          <div>
-                            <label
-                              htmlFor={`basket-spec-${item.id}`}
-                              className="block text-xs font-medium text-slate-700"
-                            >
-                              Précisions (optionnel)
-                            </label>
-                            <input
-                              id={`basket-spec-${item.id}`}
-                              type="text"
-                              value={item.specifications}
-                              onChange={(e) =>
-                                onUpdateItem(item.id, {
-                                  specifications: e.target.value,
-                                })
-                              }
-                              placeholder="Ex. Taille L, bidon 5L..."
-                              className="mt-1 block min-h-10 w-full rounded-lg border border-[#101D3B]/15 bg-white px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
-                            />
+                          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div>
+                              <label
+                                htmlFor={`basket-qty-${item.id}`}
+                                className="block text-xs font-medium text-slate-700"
+                              >
+                                {t.basketDrawer.qtyLabel}
+                              </label>
+                              <input
+                                id={`basket-qty-${item.id}`}
+                                type="text"
+                        dir="auto"
+                                value={item.quantity}
+                                onChange={(e) =>
+                                  onUpdateItem(item.id, { quantity: e.target.value })
+                                }
+                                placeholder={t.basketDrawer.qtyPlaceholder}
+                                className="mt-1 block min-h-10 w-full rounded-lg border border-[#101D3B]/15 bg-white px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor={`basket-spec-${item.id}`}
+                                className="block text-xs font-medium text-slate-700"
+                              >
+                                {t.basketDrawer.specsLabel}
+                              </label>
+                              <input
+                                id={`basket-spec-${item.id}`}
+                                type="text"
+                        dir="auto"
+                                value={item.specifications}
+                                onChange={(e) =>
+                                  onUpdateItem(item.id, {
+                                    specifications: e.target.value,
+                                  })
+                                }
+                                placeholder={t.basketDrawer.specsPlaceholder}
+                                className="mt-1 block min-h-10 w-full rounded-lg border border-[#101D3B]/15 bg-white px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </div>
@@ -225,14 +281,14 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                 {items.length > 0 && (
                   <div className="mb-3 flex items-center justify-between text-xs">
                     <span className="text-slate-500">
-                      Devis B2B sans paiement en ligne
+                      {t.basketDrawer.noOnlinePaymentNote}
                     </span>
                     <button
                       type="button"
                       onClick={onClearBasket}
                       className="rounded-sm font-medium text-slate-600 hover:text-red-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                     >
-                      Vider la sélection
+                      {t.basketDrawer.clearSelection}
                     </button>
                   </div>
                 )}
@@ -245,10 +301,10 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                 >
                   <span>
                     {items.length > 0
-                      ? 'Finaliser ma demande de devis'
-                      : 'Accéder au formulaire de devis'}
+                      ? t.basketDrawer.proceedWithItems
+                      : t.basketDrawer.proceedEmpty}
                   </span>
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
                 </Button>
               </div>
             </motion.div>

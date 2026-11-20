@@ -6,6 +6,7 @@ export const BRAND_INFO = {
   tagline: 'Un environnement plus propre, plus sain !',
   phoneDisplay: '+212 668 057 197',
   phoneHref: 'tel:+212668057197',
+  whatsappNumber: '212668057197',
   whatsappHref:
     "https://wa.me/212668057197?text=Bonjour%20ABHYGO%2C%20je%20souhaite%20obtenir%20des%20renseignements%20concernant%20vos%20produits%20d'hygi%C3%A8ne%20professionnelle%20et%20EPI.",
   email: 'abhygoprofessional@gmail.com',
@@ -130,3 +131,7 @@ export const B2B_PILLARS = [
       "Chaque demande fait l'objet d'une étude personnalisée selon vos quantités, vos usages et votre rythme de réapprovisionnement.",
   },
 ];
+
+export function buildWhatsAppDirectUrl(greeting: string): string {
+  return `https://wa.me/${BRAND_INFO.whatsappNumber}?text=${encodeURIComponent(greeting)}`;
+}

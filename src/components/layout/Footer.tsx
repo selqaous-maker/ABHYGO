@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
-import { BRAND_INFO, NAV_ITEMS } from '../../data/brand';
+import { useLanguage } from '../../context/LanguageContext';
+import { BRAND_INFO, NAV_ITEMS, buildWhatsAppDirectUrl } from '../../data/brand';
 import { PageRoute, QuoteCategory } from '../../types/site';
 import { BrandLogo } from '../common/BrandLogo';
 
@@ -9,6 +10,8 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+
   const handleNav = (
     route: PageRoute,
     e: React.MouseEvent,
@@ -32,18 +35,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <BrandLogo variant="light" />
             </a>
             <p className="mt-4 max-w-xs text-sm font-medium text-[#70BF35]">
-              {BRAND_INFO.tagline}
+              {t.brand.tagline}
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-300">
-              Fournisseur B2B de produits d&apos;hygiène professionnelle et d&apos;Équipements de
-              Protection Individuelle (EPI) basé à Belfaa, Maroc.
+              {t.brand.footer.description}
             </p>
           </div>
 
           {/* Useful Navigation */}
           <div className="lg:col-span-2">
             <h2 className="text-sm font-semibold tracking-[0.01em] text-white">
-              Navigation
+              {t.brand.footer.navigationHeading}
             </h2>
             <ul className="mt-4 space-y-2.5">
               {NAV_ITEMS.map((item) => (
@@ -53,7 +55,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     onClick={(e) => handleNav(item.id, e)}
                     className="inline-block rounded-sm text-sm text-slate-300 transition-colors hover:text-[#23B9ED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                   >
-                    {item.label}
+                    {t.brand.nav[item.id]}
                   </a>
                 </li>
               ))}
@@ -63,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Hygiene & EPI Poles */}
           <div className="lg:col-span-3">
             <h2 className="text-sm font-semibold tracking-[0.01em] text-white">
-              Fournitures B2B
+              {t.brand.footer.suppliesHeading}
             </h2>
             <ul className="mt-4 space-y-2.5 text-sm text-slate-300">
               <li>
@@ -72,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={(e) => handleNav('hygiene', e)}
                   className="inline-block rounded-sm transition-colors hover:text-[#23B9ED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
-                  Produits d&apos;hygiène professionnelle
+                  {t.brand.footer.hygieneLink}
                 </a>
               </li>
               <li>
@@ -81,7 +83,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={(e) => handleNav('epi', e)}
                   className="inline-block rounded-sm transition-colors hover:text-[#23B9ED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
-                  Équipements de Protection Individuelle (EPI)
+                  {t.brand.footer.epiLink}
                 </a>
               </li>
               <li className="pt-2">
@@ -90,8 +92,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={(e) => handleNav('contact', e, 'les-deux')}
                   className="inline-flex items-center gap-1.5 rounded-sm font-medium text-[#23B9ED] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
-                  <span>{BRAND_INFO.primaryCta}</span>
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>{t.brand.primaryCta}</span>
+                  <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" aria-hidden="true" />
                 </a>
               </li>
             </ul>
@@ -100,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Verified Contact Data */}
           <div className="lg:col-span-3">
             <h2 className="text-sm font-semibold tracking-[0.01em] text-white">
-              Contact direct
+              {t.brand.footer.contactHeading}
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-slate-300">
               <li>
@@ -109,12 +111,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="inline-flex items-center gap-2.5 rounded-sm transition-colors hover:text-[#23B9ED] tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
                   <Phone className="h-4 w-4 shrink-0 text-[#23B9ED]" aria-hidden="true" />
-                  <span>{BRAND_INFO.phoneDisplay}</span>
+                  <span dir="ltr" className="inline-block">
+                    {BRAND_INFO.phoneDisplay}
+                  </span>
                 </a>
               </li>
               <li>
                 <a
-                  href={BRAND_INFO.whatsappHref}
+                  href={buildWhatsAppDirectUrl(t.quoteLinks.defaultWhatsAppGreeting)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2.5 rounded-sm transition-colors hover:text-[#70BF35] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
@@ -123,7 +127,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     className="h-4 w-4 shrink-0 text-[#70BF35]"
                     aria-hidden="true"
                   />
-                  <span>WhatsApp direct</span>
+                  <span>{t.brand.footer.whatsappDirect}</span>
                 </a>
               </li>
               <li>
@@ -132,7 +136,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="inline-flex items-center gap-2.5 break-all rounded-sm transition-colors hover:text-[#23B9ED] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-[#23B9ED]" aria-hidden="true" />
-                  <span>{BRAND_INFO.email}</span>
+                  <span dir="ltr" className="inline-block">
+                    {BRAND_INFO.email}
+                  </span>
                 </a>
               </li>
               <li className="inline-flex items-center gap-2.5 text-slate-300">
@@ -143,7 +149,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   rel="noopener noreferrer"
                   className="rounded-sm transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#23B9ED]"
                 >
-                  {BRAND_INFO.location}
+                  {t.brand.location}
                 </a>
               </li>
             </ul>
@@ -151,8 +157,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {BRAND_INFO.name}. Tous droits réservés.</p>
-          <p>{BRAND_INFO.location} · Produits d&apos;hygiène &amp; EPI</p>
+          <p>
+            <bdi dir="ltr" className="inline-block">
+              © {new Date().getFullYear()} {BRAND_INFO.name}
+            </bdi>{' '}
+            · {t.brand.footer.copyrightSuffix}
+          </p>
+          <p>{t.brand.footer.bottomSummary}</p>
         </div>
       </div>
     </footer>

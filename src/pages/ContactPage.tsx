@@ -13,7 +13,8 @@ import {
   Trash2,
 } from 'lucide-react';
 import { useReducedMotion } from 'motion/react';
-import { BRAND_INFO } from '../data/brand';
+import { useLanguage } from '../context/LanguageContext';
+import { BRAND_INFO, buildWhatsAppDirectUrl } from '../data/brand';
 import {
   PageRoute,
   QuoteBasketItem,
@@ -24,7 +25,9 @@ import {
   buildMailtoQuoteUrl,
   buildQuoteSummaryText,
   buildWhatsAppQuoteUrl,
+  getLocalizedBasketItemMeta,
 } from '../utils/quoteLinks';
+import { formatFormErrorSummary } from '../utils/countFormat';
 import { Button } from '../components/common/Button';
 import { Reveal } from '../components/common/Reveal';
 
@@ -40,13 +43,16 @@ interface ContactPageProps {
   onNavigate: (route: PageRoute, quoteCategory?: QuoteCategory) => void;
 }
 
-type FormErrors = Partial<Record<keyof QuoteFormData, string>>;
+type FormErrorKey =
+  | 'fullNameError'
+  | 'phoneError'
+  | 'emailError'
+  | 'cityError'
+  | 'productsError';
 
-const CATEGORY_LABELS: Record<QuoteCategory, string> = {
-  hygiene: "Produits d'hygiène",
-  epi: 'EPI',
-  'les-deux': 'Hygiène & EPI',
-};
+type FormErrorKeys = Partial<Record<keyof QuoteFormData, FormErrorKey>>;
+
+const QUOTE_CATEGORIES: QuoteCategory[] = ['hygiene', 'epi', 'les-deux'];
 
 export const ContactPage: React.FC<ContactPageProps> = ({
   initialCategory = 'les-deux',
@@ -57,6 +63,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   onNavigate,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { isRtl, language, t } = useLanguage();
+
   const [formData, setFormData] = useState<QuoteFormData>({
     fullName: '',
     company: '',
@@ -69,7 +77,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     message: initialMessage,
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errorKeys, setErrorKeys] = useState<FormErrorKeys>({});
   const [hasSubmittedAttempt, setHasSubmittedAttempt] = useState(false);
   const [preparedSubmission, setPreparedSubmission] = useState<{
     data: QuoteFormData;
@@ -84,30 +92,29 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     }));
   }, [initialCategory, initialMessage]);
 
-  const validate = (data: QuoteFormData): FormErrors => {
-    const nextErrors: FormErrors = {};
+  const validate = (data: QuoteFormData): FormErrorKeys => {
+    const nextErrors: FormErrorKeys = {};
 
     if (!data.fullName.trim()) {
-      nextErrors.fullName = 'Veuillez renseigner votre nom complet.';
+      nextErrors.fullName = 'fullNameError';
     }
 
-    const phoneDigits = data.phone.replace(/[^\d+]/g, '');
-    if (!data.phone.trim() || phoneDigits.length < 8) {
-      nextErrors.phone = 'Veuillez saisir un numéro de téléphone valide.';
+    const phoneDigits = data.phone.replace(/[٠-٩۰-۹]/g, (digit) => String(digit.charCodeAt(0) - (digit <= '٩' ? 0x0660 : 0x06f0))).replace(/[^\d]/g, '');
+    if (!data.phone.trim() || phoneDigits.length < 8 || phoneDigits.length > 15) {
+      nextErrors.phone = 'phoneError';
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!data.email.trim() || !emailPattern.test(data.email.trim())) {
-      nextErrors.email = 'Veuillez saisir une adresse email valide.';
+      nextErrors.email = 'emailError';
     }
 
     if (!data.city.trim()) {
-      nextErrors.city = 'Veuillez indiquer votre ville.';
+      nextErrors.city = 'cityError';
     }
 
     if (basketItems.length === 0 && !data.requestedProducts.trim()) {
-      nextErrors.requestedProducts =
-        'Veuillez sélectionner des produits dans les catalogues ou indiquer les produits demandés.';
+      nextErrors.requestedProducts = 'productsError';
     }
 
     return nextErrors;
@@ -117,7 +124,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     e.preventDefault();
     setHasSubmittedAttempt(true);
     const validationErrors = validate(formData);
-    setErrors(validationErrors);
+    setErrorKeys(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       setPreparedSubmission({
@@ -138,30 +145,44 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     value: QuoteFormData[K]
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    if (errorKeys[field]) {
+      setErrorKeys((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
-  const errorCount = Object.values(errors).filter(Boolean).length;
+  const getErrorText = (field: keyof QuoteFormData): string | undefined => {
+    const key = errorKeys[field];
+    return key ? t.contact.form[key] : undefined;
+  };
+
+  const fullNameError = getErrorText('fullName');
+  const phoneError = getErrorText('phone');
+  const emailError = getErrorText('email');
+  const cityError = getErrorText('city');
+  const productsError = getErrorText('requestedProducts');
+
+  const errorCount = Object.values(errorKeys).filter(Boolean).length;
 
   const dispatchLinks = useMemo(() => {
     if (!preparedSubmission) return null;
     return {
       whatsappUrl: buildWhatsAppQuoteUrl(
         preparedSubmission.data,
-        preparedSubmission.basketSnapshot
+        preparedSubmission.basketSnapshot,
+        t
       ),
       mailtoUrl: buildMailtoQuoteUrl(
         preparedSubmission.data,
-        preparedSubmission.basketSnapshot
+        preparedSubmission.basketSnapshot,
+        t
       ),
       previewText: buildQuoteSummaryText(
         preparedSubmission.data,
-        preparedSubmission.basketSnapshot
+        preparedSubmission.basketSnapshot,
+        t
       ),
     };
-  }, [preparedSubmission]);
+  }, [preparedSubmission, t]);
 
   return (
     <div>
@@ -173,24 +194,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             onClick={() => onNavigate('accueil')}
             className="mb-8 inline-flex min-h-10 items-center gap-2 rounded-sm text-sm font-medium text-slate-600 transition-colors hover:text-[#1765BD] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1765BD]"
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span>Retour à l&apos;accueil</span>
+            <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+            <span>{t.common.backToHome}</span>
           </button>
 
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2.5">
               <span aria-hidden="true" className="h-0.5 w-6 bg-[#70BF35]" />
               <span className="text-xs font-semibold tracking-[0.08em] text-[#3D7514]">
-                CONTACT &amp; DEMANDE DE DEVIS · {BRAND_INFO.location.toUpperCase()}
+                {t.contact.hero.eyebrow}
               </span>
             </div>
 
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-[#101D3B] sm:text-4xl text-balance">
-              Échanger avec {BRAND_INFO.name}
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-[#101D3B] sm:text-4xl rtl:leading-[1.3] text-balance">
+              {t.contact.hero.title}
             </h1>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-              Contactez-nous directement par téléphone, WhatsApp ou email, ou préparez votre demande
-              de devis B2B en quelques instants.
+              {t.contact.hero.description}
             </p>
           </div>
         </div>
@@ -200,10 +220,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       <section className="bg-white py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
-            {/* Left Column: Contact Cards + Town-Level Map Area */}
+            {/* Start Column: Contact Cards + Town-Level Map Area */}
             <aside aria-labelledby="contact-direct-heading" className="space-y-6 lg:col-span-5">
               <h2 id="contact-direct-heading" className="sr-only">
-                Coordonnées directes et localisation à {BRAND_INFO.location}
+                {t.contact.aside.landmarkHeading}
               </h2>
               <Reveal>
                 {/* Contact Cards Grid */}
@@ -217,19 +237,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       <Phone className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-medium text-slate-500">Téléphone</p>
+                      <p className="text-xs font-medium text-slate-500">
+                        {t.contact.aside.phoneTitle}
+                      </p>
                       <p className="mt-1 text-base font-semibold text-[#101D3B] transition-colors group-hover:text-[#1765BD] tabular-nums">
-                        {BRAND_INFO.phoneDisplay}
+                        <span dir="ltr" className="inline-block">
+                          {BRAND_INFO.phoneDisplay}
+                        </span>
                       </p>
                       <p className="mt-0.5 text-xs text-slate-600">
-                        Appel direct vers notre ligne professionnelle
+                        {t.contact.aside.phoneDesc}
                       </p>
                     </div>
                   </a>
 
                   {/* WhatsApp Card */}
                   <a
-                    href={BRAND_INFO.whatsappHref}
+                    href={buildWhatsAppDirectUrl(t.quoteLinks.defaultWhatsAppGreeting)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-start gap-4 rounded-xl border border-[#101D3B]/10 bg-[#F5F8FC]/70 p-5 transition-[transform,border-color,background-color,box-shadow] duration-150 hover:-translate-y-0.5 hover:border-[#70BF35]/70 hover:bg-white hover:shadow-[0_14px_30px_-18px_rgba(16,29,59,0.2)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
@@ -239,14 +263,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                        <span>WhatsApp</span>
-                        <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                        <span>{t.contact.aside.whatsappTitle}</span>
+                        <ExternalLink className="h-3 w-3 rtl:-scale-x-100" aria-hidden="true" />
                       </div>
                       <p className="mt-1 text-base font-semibold text-[#101D3B] transition-colors group-hover:text-[#1765BD] tabular-nums">
-                        {BRAND_INFO.phoneDisplay}
+                        <span dir="ltr" className="inline-block">
+                          {BRAND_INFO.phoneDisplay}
+                        </span>
                       </p>
                       <p className="mt-0.5 text-xs text-slate-600">
-                        Ouvrir une discussion avec message pré-rempli
+                        {t.contact.aside.whatsappDesc}
                       </p>
                     </div>
                   </a>
@@ -260,12 +286,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       <Mail className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-medium text-slate-500">Email professionnel</p>
+                      <p className="text-xs font-medium text-slate-500">
+                        {t.contact.aside.emailTitle}
+                      </p>
                       <p className="mt-1 break-all text-base font-semibold text-[#101D3B] transition-colors group-hover:text-[#1765BD]">
-                        {BRAND_INFO.email}
+                        <span dir="ltr" className="inline-block">
+                          {BRAND_INFO.email}
+                        </span>
                       </p>
                       <p className="mt-0.5 text-xs text-slate-600">
-                        Demandes d&apos;offres tarifaires et renseignements
+                        {t.contact.aside.emailDesc}
                       </p>
                     </div>
                   </a>
@@ -322,10 +352,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         <MapPin className="h-5 w-5" aria-hidden="true" />
                       </div>
                       <p className="mt-2.5 text-sm font-semibold text-[#101D3B]">
-                        {BRAND_INFO.location}
+                        {t.brand.location}
                       </p>
                       <p className="text-xs text-slate-600">
-                        Localisation au niveau de la ville uniquement
+                        {t.contact.aside.mapTownOnly}
                       </p>
                     </div>
                   </div>
@@ -333,10 +363,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   <div className="flex flex-col gap-3 border-t border-[#101D3B]/10 bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm font-semibold text-[#101D3B]">
-                        {BRAND_INFO.location}
+                        {t.brand.location}
                       </p>
                       <p className="text-xs text-slate-500">
-                        Région Souss-Massa · Maroc
+                        {t.brand.region}
                       </p>
                     </div>
 
@@ -346,8 +376,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       rel="noopener noreferrer"
                       className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-[#101D3B]/20 bg-[#F5F8FC] px-4 py-2 text-xs font-medium text-[#101D3B] whitespace-nowrap transition-colors hover:border-[#1765BD] hover:text-[#1765BD] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                     >
-                      <span>Voir Belfaa sur la carte</span>
-                      <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span>{t.contact.aside.mapCta}</span>
+                      <ExternalLink className="h-3.5 w-3.5 rtl:-scale-x-100" aria-hidden="true" />
                     </a>
                   </div>
                 </div>
@@ -357,15 +387,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               <div className="rounded-xl border border-[#101D3B]/10 bg-[#F5F8FC]/60 p-4 text-xs leading-relaxed text-slate-600">
                 <div className="flex items-start gap-2.5">
                   <Lock className="mt-0.5 h-4 w-4 shrink-0 text-[#1765BD]" aria-hidden="true" />
-                  <p>
-                    Confidentialité : vos informations restent dans votre navigateur jusqu&apos;à
-                    l&apos;ouverture volontaire de WhatsApp ou de votre logiciel de messagerie.
-                  </p>
+                  <p>{t.contact.aside.privacyNote}</p>
                 </div>
               </div>
             </aside>
 
-            {/* Right Column: Enquiry Form or Prepared Dispatch Panel */}
+            {/* End Column: Enquiry Form or Prepared Dispatch Panel */}
             <div className="lg:col-span-7">
               {preparedSubmission && dispatchLinks ? (
                 <div
@@ -380,12 +407,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     />
                     <div>
                       <h2 className="text-xl font-semibold text-[#101D3B] sm:text-2xl">
-                        Votre demande est prête à être envoyée
+                        {t.contact.dispatch.readyTitle}
                       </h2>
                       <p className="mt-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-                        Ce site ne transmet pas automatiquement de messages en arrière-plan.
-                        Cliquez sur le bouton WhatsApp ou Email ci-dessous pour envoyer votre
-                        demande complète directement à notre équipe.
+                        {t.contact.dispatch.readyDescription}
                       </p>
                     </div>
                   </div>
@@ -396,27 +421,46 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       href={dispatchLinks.whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-lg bg-[#1765BD] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[#101D3B] motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
+                      className="inline-flex min-h-12 max-w-full flex-wrap items-center justify-center gap-2.5 rounded-lg bg-[#1765BD] px-5 py-3 text-center text-sm font-semibold text-white shadow-sm transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[#101D3B] motion-reduce:hover:translate-y-0 sm:px-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                     >
-                      <MessageSquare className="h-4 w-4 text-[#23B9ED]" aria-hidden="true" />
-                      <span>Envoyer sur WhatsApp ({BRAND_INFO.phoneDisplay})</span>
+                      <MessageSquare className="h-4 w-4 shrink-0 text-[#23B9ED]" aria-hidden="true" />
+                      <span className="min-w-0">
+                        {t.contact.dispatch.sendWhatsApp} (
+                        <bdi dir="ltr" className="inline-block">
+                          {BRAND_INFO.phoneDisplay}
+                        </bdi>
+                        )
+                      </span>
                     </a>
 
                     <a
                       href={dispatchLinks.mailtoUrl}
-                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#101D3B]/20 bg-white px-5 py-3 text-sm font-medium text-[#101D3B] transition-[border-color,color,transform] duration-150 hover:-translate-y-px hover:border-[#1765BD] hover:text-[#1765BD] motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
+                      className="inline-flex min-h-12 max-w-full flex-wrap items-center justify-center gap-2 rounded-lg border border-[#101D3B]/20 bg-white px-5 py-3 text-center text-sm font-medium text-[#101D3B] transition-[border-color,color,transform] duration-150 hover:-translate-y-px hover:border-[#1765BD] hover:text-[#1765BD] motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                     >
-                      <Mail className="h-4 w-4 text-[#1765BD]" aria-hidden="true" />
-                      <span>Envoyer par email ({BRAND_INFO.email})</span>
+                      <Mail className="h-4 w-4 shrink-0 text-[#1765BD]" aria-hidden="true" />
+                      <span className="min-w-0 break-all sm:break-normal">
+                        {t.contact.dispatch.sendEmail} (
+                        <bdi dir="ltr" className="inline-block break-all">
+                          {BRAND_INFO.email}
+                        </bdi>
+                        )
+                      </span>
                     </a>
                   </div>
 
                   {/* Message Preview */}
                   <div className="mt-7 rounded-xl border border-[#101D3B]/10 bg-white p-5">
                     <p className="text-xs font-semibold tracking-[0.04em] text-[#1765BD]">
-                      APERÇU DU MESSAGE PRÉ-REMPLI
+                      {t.contact.dispatch.previewHeading}
                     </p>
-                    <pre className="mt-3 whitespace-pre-wrap break-words font-[family-name:var(--font-sans)] text-sm leading-relaxed text-slate-700">
+                    <pre
+                      dir={isRtl ? 'rtl' : 'ltr'}
+                      className={`mt-3 whitespace-pre-wrap break-words text-start text-sm leading-relaxed text-slate-700 ${
+                        isRtl
+                          ? 'font-[family-name:var(--font-arabic)]'
+                          : 'font-[family-name:var(--font-sans)]'
+                      }`}
+                    >
                       {dispatchLinks.previewText}
                     </pre>
                   </div>
@@ -427,7 +471,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       size="md"
                       onClick={() => setPreparedSubmission(null)}
                     >
-                      Modifier ma demande
+                      {t.contact.dispatch.editRequest}
                     </Button>
                     <Button
                       variant="ghost"
@@ -435,7 +479,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       onClick={() => {
                         setPreparedSubmission(null);
                         setHasSubmittedAttempt(false);
-                        setErrors({});
+                        setErrorKeys({});
                         setFormData({
                           fullName: '',
                           company: '',
@@ -449,7 +493,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         });
                       }}
                     >
-                      Réinitialiser le formulaire
+                      {t.contact.dispatch.resetForm}
                     </Button>
                   </div>
                 </div>
@@ -461,10 +505,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 >
                   <div className="border-b border-[#101D3B]/10 pb-5">
                     <h2 className="text-xl font-semibold text-[#101D3B]">
-                      Formulaire de demande de devis
+                      {t.contact.form.heading}
                     </h2>
                     <p className="mt-1 text-sm text-slate-600">
-                      Complétez vos coordonnées pour générer votre demande prête à l&apos;envoi.
+                      {t.contact.form.subheading}
                     </p>
                   </div>
 
@@ -475,8 +519,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     >
                       <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                       <span>
-                        Merci de vérifier les {errorCount} champ
-                        {errorCount > 1 ? 's obligatoires signalés' : ' obligatoire signalé'} ci-dessous.
+                        {formatFormErrorSummary(
+                          errorCount,
+                          language,
+                          t.contact.form.errorSummaryOne,
+                          t.contact.form.errorSummaryManyPrefix,
+                          t.contact.form.errorSummaryManySuffix
+                        )}
                       </span>
                     </div>
                   )}
@@ -484,14 +533,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   {/* Segmented Category Selector */}
                   <div className="mt-6">
                     <span className="block text-sm font-medium text-[#101D3B]">
-                      Pôle concerné
+                      {t.contact.form.poleLabel}
                     </span>
                     <div
                       role="group"
-                      aria-label="Pôle concerné"
-                      className="mt-2.5 inline-flex flex-wrap gap-1 rounded-lg border border-[#101D3B]/10 bg-[#F5F8FC] p-1"
+                      aria-label={t.contact.form.poleLabel}
+                      className="mt-2.5 flex max-w-full flex-wrap gap-1 rounded-lg border border-[#101D3B]/10 bg-[#F5F8FC] p-1 sm:inline-flex"
                     >
-                      {(Object.keys(CATEGORY_LABELS) as QuoteCategory[]).map((cat) => {
+                      {QUOTE_CATEGORIES.map((cat) => {
                         const active = formData.category === cat;
                         return (
                           <button
@@ -499,13 +548,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                             type="button"
                             onClick={() => handleFieldChange('category', cat)}
                             aria-pressed={active}
-                            className={`min-h-10 rounded-md px-3.5 py-2 text-xs font-medium whitespace-nowrap shrink-0 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] sm:text-sm ${
+                            className={`min-h-10 rounded-md px-3.5 py-2 text-center text-xs font-medium whitespace-normal sm:whitespace-nowrap shrink-0 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD] sm:text-sm ${
                               active
                                 ? 'border border-[#101D3B]/10 bg-white text-[#101D3B] shadow-xs'
                                 : 'text-slate-600 hover:text-[#101D3B]'
                             }`}
                           >
-                            {CATEGORY_LABELS[cat]}
+                            {t.contact.form.poleLabels[cat]}
                           </button>
                         );
                       })}
@@ -522,72 +571,79 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                             aria-hidden="true"
                           />
                           <span>
-                            Articles dans votre demande ({basketItems.length})
+                            {t.contact.form.basketTitle} ({basketItems.length})
                           </span>
                         </div>
                         <button
                           type="button"
-                          onClick={() => onNavigate('hygiene')}
+                          onClick={() =>
+                            onNavigate(formData.category === 'epi' ? 'epi' : 'hygiene')
+                          }
                           className="rounded-sm text-xs font-medium text-[#1765BD] hover:underline cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
                         >
-                          Ajouter d&apos;autres articles
+                          {t.contact.form.addMoreItems}
                         </button>
                       </div>
 
                       <ul className="mt-4 space-y-3">
-                        {basketItems.map((item) => (
-                          <li
-                            key={item.id}
-                            className="rounded-lg border border-[#101D3B]/10 bg-white p-3.5"
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div>
-                                <p className="text-xs font-medium text-[#1765BD]">
-                                  {item.categoryLabel}
-                                  {item.isDemo ? ' · Démonstration' : ''}
-                                </p>
-                                <p className="mt-0.5 text-sm font-semibold text-[#101D3B]">
-                                  {item.name}
-                                </p>
+                        {basketItems.map((item) => {
+                          const localized = getLocalizedBasketItemMeta(item, t);
+                          return (
+                            <li
+                              key={item.id}
+                              className="rounded-lg border border-[#101D3B]/10 bg-white p-3.5"
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="text-xs font-medium text-[#1765BD]">
+                                    {localized.categoryLabel}
+                                    {item.isDemo ? ` · ${t.common.demoTag}` : ''}
+                                  </p>
+                                  <p className="mt-0.5 text-sm font-semibold text-[#101D3B]">
+                                    {localized.name}
+                                  </p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => onRemoveBasketItem(item.id)}
+                                  aria-label={`${t.contact.form.removeItemPrefix} ${localized.name}`}
+                                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-[#F5F8FC] hover:text-red-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
+                                >
+                                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                                </button>
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => onRemoveBasketItem(item.id)}
-                                aria-label={`Retirer ${item.name}`}
-                                className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-[#F5F8FC] hover:text-red-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1765BD]"
-                              >
-                                <Trash2 className="h-4 w-4" aria-hidden="true" />
-                              </button>
-                            </div>
 
-                            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                              <input
-                                type="text"
-                                value={item.quantity}
-                                onChange={(e) =>
-                                  onUpdateBasketItem(item.id, {
-                                    quantity: e.target.value,
-                                  })
-                                }
-                                aria-label={`Quantité pour ${item.name}`}
-                                placeholder="Quantité souhaitée (optionnel)"
-                                className="min-h-10 rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC]/40 px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
-                              />
-                              <input
-                                type="text"
-                                value={item.specifications}
-                                onChange={(e) =>
-                                  onUpdateBasketItem(item.id, {
-                                    specifications: e.target.value,
-                                  })
-                                }
-                                aria-label={`Spécifications demandées pour ${item.name}`}
-                                placeholder="Spécifications demandées (optionnel)"
-                                className="min-h-10 rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC]/40 px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
-                              />
-                            </div>
-                          </li>
-                        ))}
+                              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <input
+                                  type="text"
+                        dir="auto"
+                                  value={item.quantity}
+                                  onChange={(e) =>
+                                    onUpdateBasketItem(item.id, {
+                                      quantity: e.target.value,
+                                    })
+                                  }
+                                  aria-label={`${t.contact.form.qtyInputAriaPrefix} ${localized.name}`}
+                                  placeholder={t.contact.form.qtyInputPlaceholder}
+                                  className="min-h-10 rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC]/40 px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
+                                />
+                                <input
+                                  type="text"
+                        dir="auto"
+                                  value={item.specifications}
+                                  onChange={(e) =>
+                                    onUpdateBasketItem(item.id, {
+                                      specifications: e.target.value,
+                                    })
+                                  }
+                                  aria-label={`${t.contact.form.specsInputAriaPrefix} ${localized.name}`}
+                                  placeholder={t.contact.form.specsInputPlaceholder}
+                                  className="min-h-10 rounded-lg border border-[#101D3B]/15 bg-[#F5F8FC]/40 px-3 py-1.5 text-xs text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
+                                />
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}
@@ -599,25 +655,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-fullname"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Nom complet *
+                        {t.contact.form.fullNameLabel}
                       </label>
                       <input
                         id="quote-fullname"
                         type="text"
+                        dir="auto"
                         value={formData.fullName}
                         onChange={(e) => handleFieldChange('fullName', e.target.value)}
-                        aria-invalid={Boolean(errors.fullName)}
-                        aria-describedby={errors.fullName ? 'error-fullname' : undefined}
-                        placeholder="Votre nom et prénom"
+                        aria-invalid={Boolean(fullNameError)}
+                        aria-describedby={fullNameError ? 'error-fullname' : undefined}
+                        placeholder={t.contact.form.fullNamePlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
-                      {errors.fullName && (
+                      {fullNameError && (
                         <p
                           id="error-fullname"
                           className="mt-1.5 flex items-center gap-1.5 text-xs text-red-700"
                         >
                           <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{errors.fullName}</span>
+                          <span>{fullNameError}</span>
                         </p>
                       )}
                     </div>
@@ -627,14 +684,18 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-company"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Société <span className="font-normal text-slate-500">(optionnel)</span>
+                        {t.contact.form.companyLabel}{' '}
+                        <span className="font-normal text-slate-500">
+                          {t.common.optionalTag}
+                        </span>
                       </label>
                       <input
                         id="quote-company"
                         type="text"
+                        dir="auto"
                         value={formData.company}
                         onChange={(e) => handleFieldChange('company', e.target.value)}
-                        placeholder="Nom de votre entreprise ou organisme"
+                        placeholder={t.contact.form.companyPlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
                     </div>
@@ -644,25 +705,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-phone"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Téléphone *
+                        {t.contact.form.phoneLabel}
                       </label>
                       <input
                         id="quote-phone"
                         type="tel"
+                        dir="ltr"
                         value={formData.phone}
                         onChange={(e) => handleFieldChange('phone', e.target.value)}
-                        aria-invalid={Boolean(errors.phone)}
-                        aria-describedby={errors.phone ? 'error-phone' : undefined}
-                        placeholder="+212 6..."
+                        aria-invalid={Boolean(phoneError)}
+                        aria-describedby={phoneError ? 'error-phone' : undefined}
+                        placeholder={t.contact.form.phonePlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 tabular-nums focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
-                      {errors.phone && (
+                      {phoneError && (
                         <p
                           id="error-phone"
                           className="mt-1.5 flex items-center gap-1.5 text-xs text-red-700"
                         >
                           <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{errors.phone}</span>
+                          <span>{phoneError}</span>
                         </p>
                       )}
                     </div>
@@ -672,25 +734,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-email"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Email *
+                        {t.contact.form.emailLabel}
                       </label>
                       <input
                         id="quote-email"
                         type="email"
+                        dir="ltr"
                         value={formData.email}
                         onChange={(e) => handleFieldChange('email', e.target.value)}
-                        aria-invalid={Boolean(errors.email)}
-                        aria-describedby={errors.email ? 'error-email' : undefined}
-                        placeholder="contact@entreprise.ma"
+                        aria-invalid={Boolean(emailError)}
+                        aria-describedby={emailError ? 'error-email' : undefined}
+                        placeholder={t.contact.form.emailPlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
-                      {errors.email && (
+                      {emailError && (
                         <p
                           id="error-email"
                           className="mt-1.5 flex items-center gap-1.5 text-xs text-red-700"
                         >
                           <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{errors.email}</span>
+                          <span>{emailError}</span>
                         </p>
                       )}
                     </div>
@@ -700,25 +763,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-city"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Ville *
+                        {t.contact.form.cityLabel}
                       </label>
                       <input
                         id="quote-city"
                         type="text"
+                        dir="auto"
                         value={formData.city}
                         onChange={(e) => handleFieldChange('city', e.target.value)}
-                        aria-invalid={Boolean(errors.city)}
-                        aria-describedby={errors.city ? 'error-city' : undefined}
-                        placeholder="Ex. Belfaa, Agadir, Casablanca..."
+                        aria-invalid={Boolean(cityError)}
+                        aria-describedby={cityError ? 'error-city' : undefined}
+                        placeholder={t.contact.form.cityPlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
-                      {errors.city && (
+                      {cityError && (
                         <p
                           id="error-city"
                           className="mt-1.5 flex items-center gap-1.5 text-xs text-red-700"
                         >
                           <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{errors.city}</span>
+                          <span>{cityError}</span>
                         </p>
                       )}
                     </div>
@@ -728,34 +792,41 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-products"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Produits demandés{' '}
-                        {basketItems.length === 0 ? '*' : '(complément optionnel)'}
+                        {t.contact.form.productsLabel}{' '}
+                        {basketItems.length === 0 ? (
+                          '*'
+                        ) : (
+                          <span className="font-normal text-slate-500">
+                            {t.contact.form.productsComplementTag}
+                          </span>
+                        )}
                       </label>
                       <input
                         id="quote-products"
                         type="text"
+                        dir="auto"
                         value={formData.requestedProducts}
                         onChange={(e) =>
                           handleFieldChange('requestedProducts', e.target.value)
                         }
-                        aria-invalid={Boolean(errors.requestedProducts)}
+                        aria-invalid={Boolean(productsError)}
                         aria-describedby={
-                          errors.requestedProducts ? 'error-products' : undefined
+                          productsError ? 'error-products' : undefined
                         }
                         placeholder={
                           basketItems.length > 0
-                            ? 'Autres articles non listés ci-dessus...'
-                            : 'Ex. Gants de protection, savon liquide...'
+                            ? t.contact.form.productsPlaceholderWithBasket
+                            : t.contact.form.productsPlaceholderEmpty
                         }
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
-                      {errors.requestedProducts && (
+                      {productsError && (
                         <p
                           id="error-products"
                           className="mt-1.5 flex items-center gap-1.5 text-xs text-red-700"
                         >
                           <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{errors.requestedProducts}</span>
+                          <span>{productsError}</span>
                         </p>
                       )}
                     </div>
@@ -765,14 +836,18 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         htmlFor="quote-quantities"
                         className="block text-sm font-medium text-[#101D3B]"
                       >
-                        Quantités <span className="font-normal text-slate-500">(optionnel)</span>
+                        {t.contact.form.quantitiesLabel}{' '}
+                        <span className="font-normal text-slate-500">
+                          {t.common.optionalTag}
+                        </span>
                       </label>
                       <input
                         id="quote-quantities"
                         type="text"
+                        dir="auto"
                         value={formData.quantities}
                         onChange={(e) => handleFieldChange('quantities', e.target.value)}
-                        placeholder="Ex. 20 cartons, 50 paires..."
+                        placeholder={t.contact.form.quantitiesPlaceholder}
                         className="mt-1.5 block min-h-11 w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                       />
                     </div>
@@ -783,26 +858,28 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       htmlFor="quote-message"
                       className="block text-sm font-medium text-[#101D3B]"
                     >
-                      Message <span className="font-normal text-slate-500">(optionnel)</span>
+                      {t.contact.form.messageLabel}{' '}
+                      <span className="font-normal text-slate-500">
+                        {t.common.optionalTag}
+                      </span>
                     </label>
-                    <textarea
+                    <textarea dir="auto"
                       id="quote-message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => handleFieldChange('message', e.target.value)}
-                      placeholder="Précisez vos contraintes d'utilisation, fréquences de réapprovisionnement ou modalités souhaitées..."
+                      placeholder={t.contact.form.messagePlaceholder}
                       className="mt-1.5 block w-full rounded-lg border border-[#101D3B]/20 bg-white px-3.5 py-2.5 text-sm text-[#101D3B] placeholder:text-slate-400 focus:border-[#1765BD] focus:outline-none focus:ring-2 focus:ring-[#23B9ED]/30"
                     />
                   </div>
 
                   <div className="mt-6 flex flex-col gap-4 border-t border-[#101D3B]/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-xs text-slate-500">
-                      * Champs obligatoires. Vos données servent uniquement à générer votre message
-                      WhatsApp ou email.
+                      {t.contact.form.requiredFooterNote}
                     </p>
                     <Button type="submit" variant="primary" size="lg">
                       <MessageSquare className="h-4 w-4" aria-hidden="true" />
-                      <span>Préparer ma demande de devis</span>
+                      <span>{t.contact.form.submitButton}</span>
                     </Button>
                   </div>
                 </form>

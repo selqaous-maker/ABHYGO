@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import { BRAND_INFO } from '../../data/brand';
 
 interface BrandLogoProps {
@@ -17,6 +18,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
 }) => {
   const [imgError, setImgError] = useState(false);
+  const { t } = useLanguage();
 
   if (variant === 'light') {
     return (
@@ -25,7 +27,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           <div className="h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-xl bg-[#041028] p-1 ring-1 ring-white/15 shadow-lg">
             <img
               src={logoSrc}
-              alt={`Logo officiel ${BRAND_INFO.name}`}
+              alt={t.common.logoAlt}
               width={128}
               height={128}
               decoding="async"
@@ -35,7 +37,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             />
           </div>
         ) : (
-          <span className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-[-0.03em] text-white whitespace-nowrap shrink-0 select-none">
+          <span
+            dir="ltr"
+            className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-[-0.03em] text-white whitespace-nowrap shrink-0 select-none"
+          >
             {BRAND_INFO.name}
           </span>
         )}
@@ -49,7 +54,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         <span className="inline-flex h-11 w-11 shrink-0 overflow-hidden rounded-lg bg-[#041028] p-0.5 ring-1 ring-[#101D3B]/15 shadow-xs">
           <img
             src={logoSrc}
-            alt={`Logo officiel ${BRAND_INFO.name}`}
+            alt={t.common.logoAlt}
             width={44}
             height={44}
             decoding="async"
@@ -59,7 +64,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           />
         </span>
       )}
-      <span className="font-[family-name:var(--font-display)] text-xl font-bold tracking-[-0.03em] text-[#101D3B] whitespace-nowrap shrink-0 select-none">
+      <span
+        dir="ltr"
+        className="font-[family-name:var(--font-display)] text-xl font-bold tracking-[-0.03em] text-[#101D3B] whitespace-nowrap shrink-0 select-none"
+      >
         {BRAND_INFO.name}
       </span>
     </span>
