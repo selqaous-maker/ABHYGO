@@ -9,7 +9,8 @@ import {
   Shield,
   Sparkles,
 } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { useLanguage } from '../context/LanguageContext';
 import { HERO_MEDIA, SUPPLY_DIVISIONS } from '../data/brand';
 import { PageRoute, QuoteCategory } from '../types/site';
@@ -54,6 +55,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         {!heroImageError && (
           <img
             src={HERO_MEDIA.src}
+            srcSet={HERO_MEDIA.srcSet}
+            sizes="100vw"
             alt={t.home.hero.imageAlt}
             loading="eager"
             decoding="sync"
@@ -89,7 +92,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
+          <m.div
             initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: easeCurve }}
@@ -146,7 +149,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <span>{t.brand.primaryCta}</span>
               </Button>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 

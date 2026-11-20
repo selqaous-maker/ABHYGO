@@ -9,6 +9,7 @@ interface MediaFrameProps {
   imgClassName?: string;
   fallbackLabel?: string;
   priority?: boolean;
+  sizes?: string;
 }
 
 export const MediaFrame: React.FC<MediaFrameProps> = ({
@@ -19,8 +20,14 @@ export const MediaFrame: React.FC<MediaFrameProps> = ({
   imgClassName = '',
   fallbackLabel = 'ABHYGO',
   priority = false,
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
 }) => {
   const [hasError, setHasError] = useState(false);
+  const srcSet = src.includes('-800.webp')
+    ? [480, 800, 1200]
+        .map((width) => `${src.replace('-800.webp', `-${width}.webp`)} ${width}w`)
+        .join(', ')
+    : undefined;
 
   useEffect(() => {
     setHasError(false);
@@ -33,9 +40,11 @@ export const MediaFrame: React.FC<MediaFrameProps> = ({
       {!hasError && src ? (
         <img
           src={src}
+          srcSet={srcSet}
+          sizes={srcSet ? sizes : undefined}
           alt={alt}
-          width={800}
-          height={600}
+          width={1200}
+          height={896}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
           fetchPriority={priority ? 'high' : undefined}

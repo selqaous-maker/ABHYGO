@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowRight, ClipboardList, Trash2, X } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { useLanguage } from '../../context/LanguageContext';
 import { QuoteBasketItem } from '../../types/site';
 import { getLocalizedBasketItemMeta } from '../../utils/quoteLinks';
@@ -108,7 +109,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
       {/* Compact Floating Basket Trigger (visible when items > 0 and drawer is closed) */}
       <AnimatePresence>
         {items.length > 0 && !isOpen && (
-          <motion.div
+          <m.div
             initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
@@ -127,7 +128,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                 {items.length}
               </span>
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -142,7 +143,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
             aria-labelledby="quote-basket-title"
           >
             {/* Backdrop */}
-            <motion.div
+            <m.div
               initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -153,7 +154,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
             />
 
             {/* Panel */}
-            <motion.div
+            <m.div
               initial={shouldReduceMotion ? false : { x: slideOffset }}
               animate={{ x: 0 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { x: slideOffset }}
@@ -307,7 +308,7 @@ export const QuoteBasketDrawer: React.FC<QuoteBasketDrawerProps> = ({
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
                 </Button>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>

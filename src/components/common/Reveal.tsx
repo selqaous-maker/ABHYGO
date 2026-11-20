@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 
 interface RevealProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export const Reveal: React.FC<RevealProps> = ({
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: yOffset }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.12 }}
@@ -31,6 +32,6 @@ export const Reveal: React.FC<RevealProps> = ({
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };

@@ -1,21 +1,24 @@
-import { useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, LazyMotion, useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { QuoteBasketDrawer } from './components/catalogue/QuoteBasketDrawer';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { useLanguage } from './context/LanguageContext';
 import { NAV_ITEMS, buildWhatsAppDirectUrl } from './data/brand';
 import { SEO_BY_ROUTE } from './data/seo';
-import { AboutPage } from './pages/AboutPage';
-import { ContactPage } from './pages/ContactPage';
-import { EpiPage } from './pages/EpiPage';
 import { HomePage } from './pages/HomePage';
-import { HygienePage } from './pages/HygienePage';
 import { PageRoute, QuoteBasketItem, QuoteCategory } from './types/site';
 
 const BASKET_STORAGE_KEY = 'abhygo_quote_basket_v1';
 const EASE_CURVE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const loadMotionFeatures = () => import('./motionFeatures').then((module) => module.default);
+
+const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })));
+const EpiPage = lazy(() => import('./pages/EpiPage').then((module) => ({ default: module.EpiPage })));
+const HygienePage = lazy(() => import('./pages/HygienePage').then((module) => ({ default: module.HygienePage })));
 
 const PATH_TO_ROUTE: Record<string, PageRoute> = {
   '/': 'accueil',
@@ -268,6 +271,7 @@ export default function App() {
   };
 
   return (
+    <LazyMotion features={loadMotionFeatures} strict>
     <div className="flex min-h-screen flex-col overflow-x-clip bg-white text-[#101D3B]">
       <a
         href="#main-content"
@@ -279,17 +283,19 @@ export default function App() {
       <Header currentRoute={currentRoute} onNavigate={handleNavigate} />
 
       <main id="main-content" className="flex-1">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentRoute}
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
-            transition={{ duration: 0.16, ease: EASE_CURVE }}
-          >
-            {renderPage()}
-          </motion.div>
-        </AnimatePresence>
+        <Suspense fallback={<div className="min-h-32" aria-hidden="true" />}>
+          <AnimatePresence mode="wait">
+            <m.div
+              key={currentRoute}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
+              transition={{ duration: 0.16, ease: EASE_CURVE }}
+            >
+              {renderPage()}
+            </m.div>
+          </AnimatePresence>
+        </Suspense>
       </main>
 
       <Footer onNavigate={handleNavigate} />
@@ -324,5 +330,6 @@ export default function App() {
         onProceedToQuote={handleProceedToQuote}
       />
     </div>
+    </LazyMotion>
   );
 }

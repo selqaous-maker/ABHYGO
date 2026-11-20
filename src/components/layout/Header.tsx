@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Globe, Menu, X } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { useLanguage } from '../../context/LanguageContext';
 import { NAV_ITEMS } from '../../data/brand';
 import { PageRoute, QuoteCategory } from '../../types/site';
@@ -181,7 +182,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
       {/* Polished Mobile Menu Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
+          <m.div
             id="mobile-navigation"
             initial={shouldReduceMotion ? false : { opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -268,7 +269,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute, onNavigate }) => {
                 {t.brand.primaryCta}
               </Button>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

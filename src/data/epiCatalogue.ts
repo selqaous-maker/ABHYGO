@@ -52,11 +52,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de paire de gants tricotés avec enduction paume pour les opérations courantes de manutention en entrepôt ou atelier.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_gants_1795122050776.jpg',
+        src: '/images/demo_epi_gants_1795122050776-800.webp',
         alt: 'Visuel générique de gants de protection pour manutention',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: "Ensemble d'équipements de protection individuelle",
       },
     ],
@@ -70,11 +70,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de gants professionnels conçus pour les postes techniques nécessitant préhension et confort d'usage.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_gants_1795122050776.jpg',
+        src: '/images/demo_epi_gants_1795122050776-800.webp',
         alt: "Visuel générique de gants de protection d'atelier",
       },
       {
-        src: '/src/assets/images/hero_abhygo_supply_1795119463619.jpg',
+        src: '/images/hero_abhygo_supply_1795119463619-800.webp',
         alt: 'Fournitures professionnelles et équipements EPI',
       },
     ],
@@ -88,11 +88,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de masque à coque préformée destiné aux environnements nécessitant une barrière respiratoire individuelle.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_masques_1795122051045.jpg',
+        src: '/images/demo_epi_masques_1795122051045-800.webp',
         alt: 'Visuel générique de masques de protection respiratoire',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: "Vue complémentaire d'équipements EPI",
       },
     ],
@@ -106,11 +106,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de masque individuel pliable adapté à une distribution pratique sur site pour les équipes.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_masques_1795122051045.jpg',
+        src: '/images/demo_epi_masques_1795122051045-800.webp',
         alt: 'Visuel générique de masques pliables de protection',
       },
       {
-        src: '/src/assets/images/hero_abhygo_supply_1795119463619.jpg',
+        src: '/images/hero_abhygo_supply_1795119463619-800.webp',
         alt: 'Contexte professionnel hygiène et EPI',
       },
     ],
@@ -124,11 +124,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de lunettes transparentes à branches enveloppantes destinées à la protection oculaire quotidienne.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_lunettes_1795122050662.jpg',
+        src: '/images/demo_epi_lunettes_1795122050662-800.webp',
         alt: 'Visuel générique de lunettes de protection et visière',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: 'Lunettes et équipements de sécurité sur table',
       },
     ],
@@ -142,11 +142,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple d'écran facial réglable couvrant l'ensemble du visage lors des tâches exposées.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_lunettes_1795122050662.jpg',
+        src: '/images/demo_epi_lunettes_1795122050662-800.webp',
         alt: 'Visuel générique de visière faciale de protection',
       },
       {
-        src: '/src/assets/images/hero_abhygo_supply_1795119463619.jpg',
+        src: '/images/hero_abhygo_supply_1795119463619-800.webp',
         alt: 'Équipements de sécurité et hygiène professionnelle',
       },
     ],
@@ -160,11 +160,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de casque industriel avec harnais réglable destiné aux zones de chantier et de manutention.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_casques_1795122051598.jpg',
+        src: '/images/demo_epi_casques_1795122051598-800.webp',
         alt: 'Visuel générique de casques de sécurité blancs et bleu marine',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: 'Casque de sécurité et vêtements haute visibilité',
       },
     ],
@@ -178,11 +178,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de protection crânienne avec maintien par sangle pour les interventions sur site technique.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_casques_1795122051598.jpg',
+        src: '/images/demo_epi_casques_1795122051598-800.webp',
         alt: 'Visuel générique de casque industriel de sécurité',
       },
       {
-        src: '/src/assets/images/hero_abhygo_supply_1795119463619.jpg',
+        src: '/images/hero_abhygo_supply_1795119463619-800.webp',
         alt: 'Casque et lunettes de sécurité',
       },
     ],
@@ -196,11 +196,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de chaussures montantes à lacets pour le maintien de la cheville et le travail en environnement industriel.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_chaussures_1795122050970.jpg',
+        src: '/images/demo_epi_chaussures_1795122050970-800.webp',
         alt: 'Visuel générique de chaussures de sécurité montantes',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: 'Sélection générale EPI',
       },
     ],
@@ -214,11 +214,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de modèle conçu pour l'adhérence et l'endurance lors des déplacements quotidiens sur site.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_chaussures_1795122050970.jpg',
+        src: '/images/demo_epi_chaussures_1795122050970-800.webp',
         alt: 'Visuel générique de chaussures de travail professionnelles',
       },
       {
-        src: '/src/assets/images/hero_abhygo_supply_1795119463619.jpg',
+        src: '/images/hero_abhygo_supply_1795119463619-800.webp',
         alt: 'Environnement industriel EPI',
       },
     ],
@@ -232,11 +232,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de veste professionnelle fonctionnelle adaptée aux interventions en atelier, maintenance ou logistique.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_vetements_1795122051283.jpg',
+        src: '/images/demo_epi_vetements_1795122051283-800.webp',
         alt: 'Visuel générique de veste de travail et gilet haute visibilité',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: 'Tenue professionnelle haute visibilité',
       },
     ],
@@ -250,11 +250,11 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
       "Exemple de vêtement équipé de bandes rétro-réfléchissantes pour améliorer le repérage visuel des équipes.",
     galleryImages: [
       {
-        src: '/src/assets/images/demo_epi_vetements_1795122051283.jpg',
+        src: '/images/demo_epi_vetements_1795122051283-800.webp',
         alt: 'Visuel générique de gilet haute visibilité',
       },
       {
-        src: '/src/assets/images/epi_protection_showcase_1795119463291.jpg',
+        src: '/images/epi_protection_showcase_1795119463291-800.webp',
         alt: 'Équipement textile haute visibilité',
       },
     ],

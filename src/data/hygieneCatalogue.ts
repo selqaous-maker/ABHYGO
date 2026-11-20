@@ -49,7 +49,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'produits-nettoyage',
     description:
       "Exemple de produit d'entretien courant pour le lavage manuel ou mécanisé des sols et surfaces lavables.",
-    imageSrc: '/src/assets/images/demo_cat_nettoyage_1795121769918.jpg',
+    imageSrc: '/images/demo_cat_nettoyage_1795121769918-800.webp',
     imageAlt: 'Visuel générique de bidons et pulvérisateur pour produits de nettoyage',
     isDemo: true,
   },
@@ -59,7 +59,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'produits-nettoyage',
     description:
       "Exemple de solution destinée au dégraissage des plans de travail, ateliers et zones techniques.",
-    imageSrc: '/src/assets/images/demo_cat_nettoyage_1795121769918.jpg',
+    imageSrc: '/images/demo_cat_nettoyage_1795121769918-800.webp',
     imageAlt: 'Visuel générique de contenant professionnel de dégraissant',
     isDemo: true,
   },
@@ -69,7 +69,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'produits-desinfectants',
     description:
       "Exemple de produit destiné à l'entretien hygiénique des surfaces fréquemment sollicitées.",
-    imageSrc: '/src/assets/images/demo_cat_desinfectant_1795121772139.jpg',
+    imageSrc: '/images/demo_cat_desinfectant_1795121772139-800.webp',
     imageAlt: 'Visuel générique de bidons et vaporisateurs désinfectants',
     isDemo: true,
   },
@@ -79,7 +79,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'produits-desinfectants',
     description:
       "Exemple de formulation dédiée à l'hygiène quotidienne des blocs sanitaires et vestiaires.",
-    imageSrc: '/src/assets/images/demo_cat_desinfectant_1795121772139.jpg',
+    imageSrc: '/images/demo_cat_desinfectant_1795121772139-800.webp',
     imageAlt: 'Visuel générique de bidons sanitaires',
     isDemo: true,
   },
@@ -89,7 +89,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'savons-hygiene-mains',
     description:
       "Exemple de savon liquide destiné au lavage régulier des mains dans les espaces professionnels.",
-    imageSrc: '/src/assets/images/demo_cat_savon_mains_1795121771359.jpg',
+    imageSrc: '/images/demo_cat_savon_mains_1795121771359-800.webp',
     imageAlt: 'Visuel générique de flacons pompe et recharge pour savon mains',
     isDemo: true,
   },
@@ -99,7 +99,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'savons-hygiene-mains',
     description:
       "Exemple de solution dédiée à l'hygiène rapide des mains aux points d'accès et postes de travail.",
-    imageSrc: '/src/assets/images/demo_cat_savon_mains_1795121771359.jpg',
+    imageSrc: '/images/demo_cat_savon_mains_1795121771359-800.webp',
     imageAlt: "Visuel générique de flacon pour hygiène des mains",
     isDemo: true,
   },
@@ -109,7 +109,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'essuyage-papier-sanitaire',
     description:
       "Exemple de bobine papier destinée aux besoins d'essuyage en atelier, laboratoire ou entrepôt.",
-    imageSrc: '/src/assets/images/demo_cat_essuyage_papier_1795121772208.jpg',
+    imageSrc: '/images/demo_cat_essuyage_papier_1795121772208-800.webp',
     imageAlt: "Visuel générique de bobines d'essuyage et papier sanitaire",
     isDemo: true,
   },
@@ -119,7 +119,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'essuyage-papier-sanitaire',
     description:
       "Exemple de consommables papier pour l'équipement des sanitaires et points de lavage.",
-    imageSrc: '/src/assets/images/demo_cat_essuyage_papier_1795121772208.jpg',
+    imageSrc: '/images/demo_cat_essuyage_papier_1795121772208-800.webp',
     imageAlt: 'Visuel générique de rouleaux et essuie-mains papier',
     isDemo: true,
   },
@@ -129,7 +129,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'distributeurs-accessoires',
     description:
       "Exemple de distributeur mural conçu pour un dosage régulier dans les zones sanitaires.",
-    imageSrc: '/src/assets/images/demo_cat_distributeurs_1795121771820.jpg',
+    imageSrc: '/images/demo_cat_distributeurs_1795121771820-800.webp',
     imageAlt: 'Visuel générique de distributeur mural de savon et papier',
     isDemo: true,
   },
@@ -139,7 +139,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'distributeurs-accessoires',
     description:
       "Exemple d'appareil mural destiné à la distribution contrôlée d'essuie-mains ou de rouleaux.",
-    imageSrc: '/src/assets/images/demo_cat_distributeurs_1795121771820.jpg',
+    imageSrc: '/images/demo_cat_distributeurs_1795121771820-800.webp',
     imageAlt: 'Visuel générique de distributeur mural essuie-mains',
     isDemo: true,
   },
@@ -149,7 +149,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'materiel-nettoyage',
     description:
       "Exemple d'ensemble manche, support et bandeau microfibre pour l'entretien des sols.",
-    imageSrc: '/src/assets/images/demo_cat_materiel_nettoyage_1795121771753.jpg',
+    imageSrc: '/images/demo_cat_materiel_nettoyage_1795121771753-800.webp',
     imageAlt: 'Visuel générique de balai microfibre, raclette et lavettes',
     isDemo: true,
   },
@@ -159,7 +159,7 @@ export const HYGIENE_DEMO_PRODUCTS: HygieneProductItem[] = [
     categoryId: 'materiel-nettoyage',
     description:
       "Exemple de textiles techniques et accessoires manuels pour l'entretien quotidien des locaux.",
-    imageSrc: '/src/assets/images/demo_cat_materiel_nettoyage_1795121771753.jpg',
+    imageSrc: '/images/demo_cat_materiel_nettoyage_1795121771753-800.webp',
     imageAlt: 'Visuel générique de raclette et textiles microfibres',
     isDemo: true,
   },
