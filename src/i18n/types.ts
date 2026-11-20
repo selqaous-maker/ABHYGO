@@ -87,6 +87,7 @@ export interface TranslationDictionary {
     hero: {
       eyebrow: string;
       title: string;
+      titleAccent: string;
       subtitle: string;
       imageAlt: string;
       fallbackLabel: string;
