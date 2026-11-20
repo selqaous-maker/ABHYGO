@@ -26,6 +26,7 @@ interface HomePageProps {
 const TRUST_ICONS = [Building2, Layers, MapPin, FileText] as const;
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+  const [heroImageError, setHeroImageError] = React.useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { t } = useLanguage();
 
@@ -37,155 +38,122 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   };
 
   const easeCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
+  const fullTitle = t.home.hero.title;
+  const accentPhrase = t.home.hero.titleAccent;
+  const hasTrailingAccent =
+    accentPhrase.length > 0 && fullTitle.endsWith(accentPhrase);
+  const titlePrefix = hasTrailingAccent
+    ? fullTitle.slice(0, fullTitle.length - accentPhrase.length)
+    : fullTitle;
 
   return (
     <div>
-      {/* 1. Premium Full-Width Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#F5F8FC] via-white to-[#EDF4FC] py-12 sm:py-16 lg:py-24">
-        {/* Subtle restrained architectural backdrop accents */}
+      {/* 1. Full-Width Cinematic Dark Navy Hero Section */}
+      <section className="relative flex min-h-[500px] items-center overflow-hidden bg-gradient-to-br from-[#071226] via-[#0D2147] to-[#133875] py-14 sm:min-h-[560px] sm:py-20 lg:min-h-[620px] lg:py-24">
+        {/* Full-bleed Industrial Hygiene & PPE Background Photo */}
+        {!heroImageError && (
+          <img
+            src={HERO_MEDIA.src}
+            alt={t.home.hero.imageAlt}
+            loading="eager"
+            decoding="sync"
+            fetchPriority="high"
+            referrerPolicy="no-referrer"
+            onError={() => setHeroImageError(true)}
+            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-[70%_center] opacity-85 sm:object-[64%_center] lg:object-[60%_center] rtl:object-[30%_center] rtl:sm:object-[36%_center] rtl:lg:object-[40%_center]"
+          />
+        )}
+
+        {/* Measured Navy & Royal Blue Contrast Scrims (LTR + RTL safe, >= AA contrast) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#23B9ED]/30 to-transparent"
+          className="pointer-events-none absolute inset-0 bg-[#081630]/72 sm:bg-[#081630]/62 lg:bg-[#081630]/35"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -end-24 -top-24 h-96 w-96 rounded-full bg-[#23B9ED]/[0.06] blur-3xl"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#071226]/95 via-[#0B1E44]/85 to-[#123774]/35 rtl:bg-gradient-to-l"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 start-1/3 h-72 w-72 rounded-full bg-[#70BF35]/[0.05] blur-3xl"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071226]/80 via-transparent to-[#071226]/30"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-14">
-            {/* Start Column: Eyebrow, Headline, Copy, CTAs */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: easeCurve }}
-              className="flex flex-col justify-center lg:col-span-6"
-            >
-              {/* Small green eyebrow label (WCAG AA contrast #3D7514 on #F5F8FC) */}
-              <div className="inline-flex items-center gap-2.5">
-                <span aria-hidden="true" className="h-0.5 w-6 bg-[#70BF35]" />
-                <span className="text-xs font-semibold tracking-[0.08em] text-[#3D7514] sm:text-[13px]">
-                  {t.home.hero.eyebrow}
-                </span>
-              </div>
+        {/* Subtle Architectural Blue & Green Atmospheric Glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-28 start-1/4 h-80 w-80 rounded-full bg-[#23B9ED]/[0.14] blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 end-1/4 h-72 w-72 rounded-full bg-[#70BF35]/[0.08] blur-3xl"
+        />
 
-              <h1 className="mt-5 text-[clamp(2rem,4.1vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#101D3B] text-balance rtl:text-[clamp(1.85rem,3.6vw,3.15rem)] rtl:leading-[1.28]">
-                {t.home.hero.title}
-              </h1>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: easeCurve }}
+            className="max-w-2xl"
+          >
+            {/* Eyebrow with ABHYGO green highlight line */}
+            <div className="inline-flex items-center gap-3">
+              <span aria-hidden="true" className="h-[2px] w-7 shrink-0 bg-[#7ED340]" />
+              <span className="text-xs font-semibold tracking-[0.09em] text-[#D8E7FA] sm:text-[13px]">
+                {t.home.hero.eyebrow}
+              </span>
+            </div>
 
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-                {t.home.hero.subtitle}
-              </p>
+            {/* Dominant Display Headline with ABHYGO green accent */}
+            <h1 className="mt-5 text-[clamp(2rem,4.3vw,3.75rem)] font-bold leading-[1.08] tracking-[-0.025em] text-white text-balance rtl:text-[clamp(1.85rem,3.8vw,3.25rem)] rtl:leading-[1.28]">
+              {titlePrefix}
+              {hasTrailingAccent && (
+                <span className="text-[#7ED340]">{accentPhrase}</span>
+              )}
+            </h1>
 
-              {/* Quiet tagline line */}
-              <p className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[#101D3B]">
-                <CheckCircle2
-                  className="h-4 w-4 shrink-0 text-[#3D7514]"
-                  aria-hidden="true"
-                />
-                <span>{t.brand.tagline}</span>
-              </p>
+            {/* Supporting Factual B2B Positioning */}
+            <p className="mt-5 max-w-[56ch] text-base leading-relaxed text-[#D8E5F7] sm:text-[17px]">
+              {t.home.hero.subtitle}
+            </p>
 
-              {/* Two Premium CTAs */}
-              <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={scrollToCategories}
-                  className="shadow-[0_10px_24px_-10px_rgba(23,101,189,0.55)] hover:shadow-[0_14px_28px_-10px_rgba(16,29,59,0.45)]"
-                >
-                  <span>{t.brand.secondaryCta}</span>
-                  <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
-                </Button>
+            {/* Quiet Verified Tagline */}
+            <p className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-white/95">
+              <CheckCircle2
+                className="h-4 w-4 shrink-0 text-[#7ED340]"
+                aria-hidden="true"
+              />
+              <span>{t.brand.tagline}</span>
+            </p>
 
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  onClick={() => onNavigate('contact', 'les-deux')}
-                >
-                  <span>{t.brand.primaryCta}</span>
-                </Button>
-              </div>
-            </motion.div>
+            {/* Primary & Secondary Action Hierarchy */}
+            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button
+                variant="accent"
+                size="lg"
+                onClick={scrollToCategories}
+                className="w-full sm:w-auto"
+              >
+                <span>{t.brand.secondaryCta}</span>
+                <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+              </Button>
 
-            {/* End Column: Art-Directed Multi-Layer Studio Composition (images never mirrored) */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.48, delay: 0.06, ease: easeCurve }}
-              className="relative sm:py-5 lg:col-span-6 lg:py-6"
-            >
-              <div className="relative mx-auto max-w-2xl lg:max-w-none">
-                {/* Architectural offset depth frame */}
-                <div
-                  aria-hidden="true"
-                  className="absolute -bottom-3 -end-3 top-4 start-4 rounded-2xl border border-[#1765BD]/20 bg-gradient-to-br from-[#1765BD]/[0.06] to-[#70BF35]/[0.06] sm:-bottom-4 sm:-end-4"
-                />
-
-                {/* Primary Studio Photo: Hygiene products, consumables & PPE */}
-                <div className="relative overflow-hidden rounded-2xl border border-[#101D3B]/10 bg-white shadow-[0_24px_60px_-24px_rgba(16,29,59,0.28)]">
-                  <MediaFrame
-                    src={HERO_MEDIA.src}
-                    alt={t.home.hero.imageAlt}
-                    aspectClassName="aspect-[16/11] sm:aspect-[16/10]"
-                    className="border-0 rounded-none"
-                    fallbackLabel={t.home.hero.fallbackLabel}
-                    priority
-                  />
-                  {/* Subtle edge depth gradient */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#101D3B]/35 via-[#101D3B]/10 to-transparent"
-                  />
-                  {/* Subtle blue/green architectural accent rule along bottom */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 bottom-0 flex h-1"
-                  >
-                    <span className="w-2/3 bg-[#1765BD]" />
-                    <span className="w-1/6 bg-[#23B9ED]" />
-                    <span className="w-1/6 bg-[#70BF35]" />
-                  </div>
-                </div>
-
-                {/* Layered Secondary Composition Insets (Clean Studio Details) */}
-                <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-0 sm:block">
-                  <div className="overflow-hidden rounded-xl border-2 border-white bg-white shadow-[0_14px_32px_-12px_rgba(16,29,59,0.3)] ring-1 ring-[#101D3B]/10 sm:absolute sm:-bottom-5 sm:start-5 sm:w-44 md:w-48">
-                    <MediaFrame
-                      src={SUPPLY_DIVISIONS.hygiene.imageSrc}
-                      alt={t.home.divisionCards.hygiene.imageAlt}
-                      aspectClassName="aspect-[4/3]"
-                      className="border-0 rounded-none"
-                      fallbackLabel={t.home.divisionCards.hygiene.title}
-                      priority
-                    />
-                  </div>
-
-                  <div className="overflow-hidden rounded-xl border-2 border-white bg-white shadow-[0_14px_32px_-12px_rgba(16,29,59,0.3)] ring-1 ring-[#101D3B]/10 sm:absolute sm:-top-5 sm:end-5 sm:w-40 md:w-44">
-                    <MediaFrame
-                      src={SUPPLY_DIVISIONS.epi.imageSrc}
-                      alt={t.home.divisionCards.epi.imageAlt}
-                      aspectClassName="aspect-[4/3]"
-                      className="border-0 rounded-none"
-                      fallbackLabel={t.home.divisionCards.epi.title}
-                      priority
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+              <Button
+                variant="outlineLight"
+                size="lg"
+                onClick={() => onNavigate('contact', 'les-deux')}
+                className="w-full sm:w-auto"
+              >
+                <span>{t.brand.primaryCta}</span>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 2. Horizontal Trust-Oriented Message Bar */}
       <section
         aria-label={t.home.trustBarAria}
-        className="border-y border-[#101D3B]/15 bg-[#101D3B] text-white"
+        className="border-t border-white/12 border-b border-[#101D3B]/15 bg-[#101D3B] text-white"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
@@ -369,3 +337,4 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+ 
