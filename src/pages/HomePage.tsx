@@ -40,12 +40,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   const easeCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
   const fullTitle = t.home.hero.title;
-  const accentPhrase = t.home.hero.titleAccent;
-  const hasTrailingAccent =
-    accentPhrase.length > 0 && fullTitle.endsWith(accentPhrase);
-  const titlePrefix = hasTrailingAccent
-    ? fullTitle.slice(0, fullTitle.length - accentPhrase.length)
-    : fullTitle;
 
   return (
     <div>
@@ -108,10 +102,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             {/* Dominant Display Headline with ABHYGO green accent */}
             <h1 className="mt-5 text-[clamp(2rem,4.3vw,3.75rem)] font-bold leading-[1.08] tracking-[-0.025em] text-white text-balance rtl:text-[clamp(1.85rem,3.8vw,3.25rem)] rtl:leading-[1.28]">
-              {titlePrefix}
-              {hasTrailingAccent && (
-                <span className="text-[#7ED340]">{accentPhrase}</span>
-              )}
+              {fullTitle}
             </h1>
 
             {/* Supporting Factual B2B Positioning */}

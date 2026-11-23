@@ -328,6 +328,176 @@ export const AR_TRANSLATIONS: TranslationDictionary = {
           'نموذج لأقمشة تقنية وملحقات يدوية مصمّمة لتيسير أشغال الصيانة اليومية في المقرات.',
         imageAlt: 'صورة توضيحية عامة لمقشطة وأقمشة الميكروفايبر',
       },
+      'supplier-hypo-javel-24': {
+        name: 'منتج Hypo Javel 24',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Hypo Javel 24 للاستعمال المهني',
+      },
+      'supplier-hypo-javel-12': {
+        name: 'منتج Hypo Javel 12',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Hypo Javel 12 للاستعمال المهني',
+      },
+      'supplier-eroma-hand': {
+        name: 'منتج Eroma Hand',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Hand للاستعمال المهني',
+      },
+      'supplier-eroma-gel': {
+        name: 'منتج Eroma Gel',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Gel للاستعمال المهني',
+      },
+      'supplier-eroma-asp': {
+        name: 'منتج Eroma ASP',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma ASP للاستعمال المهني',
+      },
+      'supplier-eroma-sol-citron': {
+        name: 'منتج Eroma Sol Citron',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Sol Citron للاستعمال المهني',
+      },
+      'supplier-eroma-sol-dl': {
+        name: 'منتج Eroma Sol DL',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Sol DL للاستعمال المهني',
+      },
+      'supplier-eroma-sol-fleur': {
+        name: 'منتج Eroma Sol Fleur',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Sol Fleur للاستعمال المهني',
+      },
+      'supplier-eroma-sol-lavande': {
+        name: 'منتج Eroma Sol Lavande',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Eroma Sol Lavande للاستعمال المهني',
+      },
+      'supplier-balai-alimentaire': {
+        name: 'منتج Balai Alimentaire',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Balai Alimentaire للاستعمال المهني',
+      },
+      'supplier-balai-dur': {
+        name: 'منتج Balai Dur',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Balai Dur للاستعمال المهني',
+      },
+      'supplier-balai-souple': {
+        name: 'منتج Balai Souple',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Balai Souple للاستعمال المهني',
+      },
+      'supplier-chamoisines': {
+        name: 'منتج Chamoisines',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Chamoisines للاستعمال المهني',
+      },
+      'supplier-chiffons-en-microfibre': {
+        name: 'منتج Chiffons En Microfibre',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Chiffons En Microfibre للاستعمال المهني',
+      },
+      'supplier-jex-abrasif': {
+        name: 'منتج Jex Abrasif',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Jex Abrasif للاستعمال المهني',
+      },
+      'supplier-manche-en-bois': {
+        name: 'منتج Manche En Bois',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Manche En Bois للاستعمال المهني',
+      },
+      'supplier-manche': {
+        name: 'منتج Manche',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Manche للاستعمال المهني',
+      },
+      'supplier-pelle-avec-manche': {
+        name: 'منتج Pelle Avec Manche',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Pelle Avec Manche للاستعمال المهني',
+      },
+      'supplier-pelle-en-plastique': {
+        name: 'منتج Pelle En Plastique',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Pelle En Plastique للاستعمال المهني',
+      },
+      'supplier-raclette-sol-alimentaire': {
+        name: 'منتج Raclette Sol Alimentaire',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Raclette Sol Alimentaire للاستعمال المهني',
+      },
+      'supplier-raclette-vitre-inox': {
+        name: 'منتج Raclette Vitre Inox',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Raclette Vitre Inox للاستعمال المهني',
+      },
+      'supplier-serpilliere-couleur': {
+        name: 'منتج Serpilliere Couleur',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Serpilliere Couleur للاستعمال المهني',
+      },
+      'supplier-distributeur-de-desinfectant-automatique': {
+        name: 'منتج Distributeur De Desinfectant Automatique',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Distributeur De Desinfectant Automatique للاستعمال المهني',
+      },
+      'supplier-distributeur-savon-jvd-cleanline': {
+        name: 'منتج Distributeur Savon Jvd Cleanline',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Distributeur Savon Jvd Cleanline للاستعمال المهني',
+      },
+      'supplier-papier-hygienique': {
+        name: 'منتج Papier Hygienique',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Papier Hygienique للاستعمال المهني',
+      },
+      'supplier-papier-essuie-main': {
+        name: 'منتج Papier Essuie Main',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Papier Essuie Main للاستعمال المهني',
+      },
+      'supplier-papier-essuie-tout': {
+        name: 'منتج Papier Essuie Tout',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Papier Essuie Tout للاستعمال المهني',
+      },
+      'supplier-papier-jumbo': {
+        name: 'منتج Papier Jumbo',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Papier Jumbo للاستعمال المهني',
+      },
+      'supplier-papier-zig-zag': {
+        name: 'منتج Papier Zig Zag',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Papier Zig Zag للاستعمال المهني',
+      },
+      'supplier-planet-container': {
+        name: 'منتج Planet Container',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Planet Container للاستعمال المهني',
+      },
+      'supplier-poubelle-ronde-inox': {
+        name: 'منتج Poubelle Ronde Inox',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Poubelle Ronde Inox للاستعمال المهني',
+      },
+      'supplier-sac-poubelle': {
+        name: 'منتج Sac Poubelle',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Sac Poubelle للاستعمال المهني',
+      },
+      'supplier-scotche-transparent': {
+        name: 'منتج Scotche Transparent',
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: 'منتج Scotche Transparent للاستعمال المهني',
+      },
+      'supplier-poste-dappatage-total-box-noir': {
+        name: "منتج Poste d'appâtage Total Box noir",
+        description: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد التعبئة والاستعمالات النهائية عند إعداد عرض السعر.',
+        imageAlt: "منتج Poste d'appâtage Total Box noir للاستعمال المهني",
+      },
     },
   },
   epi: {
@@ -527,6 +697,96 @@ export const AR_TRANSLATIONS: TranslationDictionary = {
           'صورة توضيحية عامة لسترة عالية الوضوح',
           'تجهيز نسيجي عالي الوضوح',
         ],
+      },
+      'supplier-blouse-a-usage-unique': {
+        name: 'منتج Blouse A Usage Unique',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Blouse A Usage Unique للاستعمال المهني'],
+      },
+      'supplier-charlotte-a-usage-unique': {
+        name: 'منتج Charlotte A Usage Unique',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Charlotte A Usage Unique للاستعمال المهني'],
+      },
+      'supplier-couvre-botte-a-usage-unique': {
+        name: 'منتج Couvre Botte A Usage Unique',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Couvre Botte A Usage Unique للاستعمال المهني'],
+      },
+      'supplier-couvre-chaussure-a-usage-unique': {
+        name: 'منتج Couvre Chaussure A Usage Unique',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Couvre Chaussure A Usage Unique للاستعمال المهني'],
+      },
+      'supplier-gant-jetable-en-nitrile-bleu': {
+        name: 'منتج Gant Jetable En Nitrile Bleu',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Gant Jetable En Nitrile Bleu للاستعمال المهني'],
+      },
+      'supplier-gant-jetable-en-nitrile-bleu-2': {
+        name: 'منتج Gant jetable en nitrile bleu renforcé',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Gant jetable en nitrile bleu renforcé للاستعمال المهني'],
+      },
+      'supplier-gant-jetable-en-vinyle': {
+        name: 'منتج Gant Jetable En Vinyle',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Gant Jetable En Vinyle للاستعمال المهني'],
+      },
+      'supplier-manchette-a-usage-unique': {
+        name: 'منتج Manchette A Usage Unique',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Manchette A Usage Unique للاستعمال المهني'],
+      },
+      'supplier-botte-de-protection-alimentaire-blanche': {
+        name: 'منتج Botte De Protection Alimentaire Blanche',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Botte De Protection Alimentaire Blanche للاستعمال المهني'],
+      },
+      'supplier-botte-en-pvc-vert': {
+        name: 'منتج Botte en PVC vert',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Botte en PVC vert للاستعمال المهني'],
+      },
+      'supplier-botte-en-pvc-alimentaire-blanche': {
+        name: 'منتج Botte En Pvc Alimentaire Blanche',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Botte En Pvc Alimentaire Blanche للاستعمال المهني'],
+      },
+      'supplier-casque-anti-bruit': {
+        name: 'منتج Casque Anti Bruit',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Casque Anti Bruit للاستعمال المهني'],
+      },
+      'supplier-chaussures-de-securite-ars': {
+        name: 'منتج Chaussures De Securite Ars',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Chaussures De Securite Ars للاستعمال المهني'],
+      },
+      'supplier-chaussures-de-securite-mts': {
+        name: 'منتج Chaussures De Securite Mts',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Chaussures De Securite Mts للاستعمال المهني'],
+      },
+      'supplier-gant-bicolore': {
+        name: 'منتج Gant Bicolore',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Gant Bicolore للاستعمال المهني'],
+      },
+      'supplier-lunette-de-protection': {
+        name: 'منتج Lunette De Protection',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Lunette De Protection للاستعمال المهني'],
+      },
+      'supplier-masque-climax': {
+        name: 'منتج Masque Climax',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Masque Climax للاستعمال المهني'],
+      },
+      'supplier-sabot': {
+        name: 'منتج Sabot',
+        shortDescription: 'منتج ضمن تشكيلة المورد FastMosk، وتُحدّد المقاسات والمواد والخصائص النهائية عند إعداد عرض السعر.',
+        galleryAlts: ['منتج Sabot للاستعمال المهني'],
       },
     },
   },

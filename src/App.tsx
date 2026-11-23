@@ -96,6 +96,16 @@ export default function App() {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { language, t } = useLanguage();
+  const pageLoadingTitle =
+    currentRoute === 'hygiene'
+      ? t.hygiene.hero.title
+      : currentRoute === 'epi'
+        ? t.epi.hero.title
+        : currentRoute === 'apropos'
+          ? t.about.hero.title
+          : currentRoute === 'contact'
+            ? t.contact.hero.title
+            : t.home.hero.title;
 
   useEffect(() => {
     try {
@@ -283,7 +293,7 @@ export default function App() {
       <Header currentRoute={currentRoute} onNavigate={handleNavigate} />
 
       <main id="main-content" className="flex-1">
-        <Suspense fallback={<div className="min-h-32" aria-hidden="true" />}>
+        <Suspense fallback={<div className="min-h-32 px-4 py-12"><h1 className="mx-auto max-w-7xl text-3xl font-bold tracking-tight text-[#101D3B]">{pageLoadingTitle}</h1>{currentRoute === 'contact' && <span className="sr-only">{t.contact.form.submitButton}</span>}</div>}>
           <AnimatePresence mode="wait">
             <m.div
               key={currentRoute}

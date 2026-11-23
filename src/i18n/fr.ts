@@ -332,6 +332,176 @@ export const FR_TRANSLATIONS: TranslationDictionary = {
           "Exemple de textiles techniques et accessoires manuels pour l'entretien quotidien des locaux.",
         imageAlt: 'Visuel générique de raclette et textiles microfibres',
       },
+      'supplier-hypo-javel-24': {
+        name: 'Hypo Javel 24',
+        description: 'Hypo Javel 24 proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Hypo Javel 24 pour environnement professionnel',
+      },
+      'supplier-hypo-javel-12': {
+        name: 'Hypo Javel 12',
+        description: 'Hypo Javel 12 proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Hypo Javel 12 pour environnement professionnel',
+      },
+      'supplier-eroma-hand': {
+        name: 'Eroma Hand',
+        description: 'Eroma Hand proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Hand pour environnement professionnel',
+      },
+      'supplier-eroma-gel': {
+        name: 'Eroma Gel',
+        description: 'Eroma Gel proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Gel pour environnement professionnel',
+      },
+      'supplier-eroma-asp': {
+        name: 'Eroma ASP',
+        description: 'Eroma ASP proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma ASP pour environnement professionnel',
+      },
+      'supplier-eroma-sol-citron': {
+        name: 'Eroma Sol Citron',
+        description: 'Eroma Sol Citron proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Sol Citron pour environnement professionnel',
+      },
+      'supplier-eroma-sol-dl': {
+        name: 'Eroma Sol DL',
+        description: 'Eroma Sol DL proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Sol DL pour environnement professionnel',
+      },
+      'supplier-eroma-sol-fleur': {
+        name: 'Eroma Sol Fleur',
+        description: 'Eroma Sol Fleur proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Sol Fleur pour environnement professionnel',
+      },
+      'supplier-eroma-sol-lavande': {
+        name: 'Eroma Sol Lavande',
+        description: 'Eroma Sol Lavande proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Eroma Sol Lavande pour environnement professionnel',
+      },
+      'supplier-balai-alimentaire': {
+        name: 'Balai Alimentaire',
+        description: 'Balai Alimentaire proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Balai Alimentaire pour environnement professionnel',
+      },
+      'supplier-balai-dur': {
+        name: 'Balai Dur',
+        description: 'Balai Dur proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Balai Dur pour environnement professionnel',
+      },
+      'supplier-balai-souple': {
+        name: 'Balai Souple',
+        description: 'Balai Souple proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Balai Souple pour environnement professionnel',
+      },
+      'supplier-chamoisines': {
+        name: 'Chamoisines',
+        description: 'Chamoisines proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Chamoisines pour environnement professionnel',
+      },
+      'supplier-chiffons-en-microfibre': {
+        name: 'Chiffons En Microfibre',
+        description: 'Chiffons En Microfibre proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Chiffons En Microfibre pour environnement professionnel',
+      },
+      'supplier-jex-abrasif': {
+        name: 'Jex Abrasif',
+        description: 'Jex Abrasif proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Jex Abrasif pour environnement professionnel',
+      },
+      'supplier-manche-en-bois': {
+        name: 'Manche En Bois',
+        description: 'Manche En Bois proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Manche En Bois pour environnement professionnel',
+      },
+      'supplier-manche': {
+        name: 'Manche',
+        description: 'Manche proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Manche pour environnement professionnel',
+      },
+      'supplier-pelle-avec-manche': {
+        name: 'Pelle Avec Manche',
+        description: 'Pelle Avec Manche proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Pelle Avec Manche pour environnement professionnel',
+      },
+      'supplier-pelle-en-plastique': {
+        name: 'Pelle En Plastique',
+        description: 'Pelle En Plastique proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Pelle En Plastique pour environnement professionnel',
+      },
+      'supplier-raclette-sol-alimentaire': {
+        name: 'Raclette Sol Alimentaire',
+        description: 'Raclette Sol Alimentaire proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Raclette Sol Alimentaire pour environnement professionnel',
+      },
+      'supplier-raclette-vitre-inox': {
+        name: 'Raclette Vitre Inox',
+        description: 'Raclette Vitre Inox proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Raclette Vitre Inox pour environnement professionnel',
+      },
+      'supplier-serpilliere-couleur': {
+        name: 'Serpilliere Couleur',
+        description: 'Serpilliere Couleur proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Serpilliere Couleur pour environnement professionnel',
+      },
+      'supplier-distributeur-de-desinfectant-automatique': {
+        name: 'Distributeur De Desinfectant Automatique',
+        description: 'Distributeur De Desinfectant Automatique proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Distributeur De Desinfectant Automatique pour environnement professionnel',
+      },
+      'supplier-distributeur-savon-jvd-cleanline': {
+        name: 'Distributeur Savon Jvd Cleanline',
+        description: 'Distributeur Savon Jvd Cleanline proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Distributeur Savon Jvd Cleanline pour environnement professionnel',
+      },
+      'supplier-papier-hygienique': {
+        name: 'Papier Hygienique',
+        description: 'Papier Hygienique proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Papier Hygienique pour environnement professionnel',
+      },
+      'supplier-papier-essuie-main': {
+        name: 'Papier Essuie Main',
+        description: 'Papier Essuie Main proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Papier Essuie Main pour environnement professionnel',
+      },
+      'supplier-papier-essuie-tout': {
+        name: 'Papier Essuie Tout',
+        description: 'Papier Essuie Tout proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Papier Essuie Tout pour environnement professionnel',
+      },
+      'supplier-papier-jumbo': {
+        name: 'Papier Jumbo',
+        description: 'Papier Jumbo proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Papier Jumbo pour environnement professionnel',
+      },
+      'supplier-papier-zig-zag': {
+        name: 'Papier Zig Zag',
+        description: 'Papier Zig Zag proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Papier Zig Zag pour environnement professionnel',
+      },
+      'supplier-planet-container': {
+        name: 'Planet Container',
+        description: 'Planet Container proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Planet Container pour environnement professionnel',
+      },
+      'supplier-poubelle-ronde-inox': {
+        name: 'Poubelle Ronde Inox',
+        description: 'Poubelle Ronde Inox proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Poubelle Ronde Inox pour environnement professionnel',
+      },
+      'supplier-sac-poubelle': {
+        name: 'Sac Poubelle',
+        description: 'Sac Poubelle proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Sac Poubelle pour environnement professionnel',
+      },
+      'supplier-scotche-transparent': {
+        name: 'Scotche Transparent',
+        description: 'Scotche Transparent proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.',
+        imageAlt: 'Scotche Transparent pour environnement professionnel',
+      },
+      'supplier-poste-dappatage-total-box-noir': {
+        name: "Poste d'appâtage Total Box noir",
+        description: "Poste d'appâtage Total Box noir proposé dans la gamme du fournisseur FastMosk. Conditionnement et usages à confirmer sur devis.",
+        imageAlt: "Poste d'appâtage Total Box noir pour environnement professionnel",
+      },
     },
   },
   epi: {
@@ -532,6 +702,96 @@ export const FR_TRANSLATIONS: TranslationDictionary = {
           'Visuel générique de gilet haute visibilité',
           'Équipement textile haute visibilité',
         ],
+      },
+      'supplier-blouse-a-usage-unique': {
+        name: 'Blouse A Usage Unique',
+        shortDescription: 'Blouse A Usage Unique proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Blouse A Usage Unique'],
+      },
+      'supplier-charlotte-a-usage-unique': {
+        name: 'Charlotte A Usage Unique',
+        shortDescription: 'Charlotte A Usage Unique proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Charlotte A Usage Unique'],
+      },
+      'supplier-couvre-botte-a-usage-unique': {
+        name: 'Couvre Botte A Usage Unique',
+        shortDescription: 'Couvre Botte A Usage Unique proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Couvre Botte A Usage Unique'],
+      },
+      'supplier-couvre-chaussure-a-usage-unique': {
+        name: 'Couvre Chaussure A Usage Unique',
+        shortDescription: 'Couvre Chaussure A Usage Unique proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Couvre Chaussure A Usage Unique'],
+      },
+      'supplier-gant-jetable-en-nitrile-bleu': {
+        name: 'Gant Jetable En Nitrile Bleu',
+        shortDescription: 'Gant Jetable En Nitrile Bleu proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Gant Jetable En Nitrile Bleu'],
+      },
+      'supplier-gant-jetable-en-nitrile-bleu-2': {
+        name: 'Gant jetable en nitrile bleu renforcé',
+        shortDescription: 'Gant jetable en nitrile bleu renforcé proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Gant jetable en nitrile bleu renforcé'],
+      },
+      'supplier-gant-jetable-en-vinyle': {
+        name: 'Gant Jetable En Vinyle',
+        shortDescription: 'Gant Jetable En Vinyle proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Gant Jetable En Vinyle'],
+      },
+      'supplier-manchette-a-usage-unique': {
+        name: 'Manchette A Usage Unique',
+        shortDescription: 'Manchette A Usage Unique proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Manchette A Usage Unique'],
+      },
+      'supplier-botte-de-protection-alimentaire-blanche': {
+        name: 'Botte De Protection Alimentaire Blanche',
+        shortDescription: 'Botte De Protection Alimentaire Blanche proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Botte De Protection Alimentaire Blanche'],
+      },
+      'supplier-botte-en-pvc-vert': {
+        name: 'Botte en PVC vert',
+        shortDescription: 'Botte en PVC vert proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Botte en PVC vert'],
+      },
+      'supplier-botte-en-pvc-alimentaire-blanche': {
+        name: 'Botte En Pvc Alimentaire Blanche',
+        shortDescription: 'Botte En Pvc Alimentaire Blanche proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Botte En Pvc Alimentaire Blanche'],
+      },
+      'supplier-casque-anti-bruit': {
+        name: 'Casque Anti Bruit',
+        shortDescription: 'Casque Anti Bruit proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Casque Anti Bruit'],
+      },
+      'supplier-chaussures-de-securite-ars': {
+        name: 'Chaussures De Securite Ars',
+        shortDescription: 'Chaussures De Securite Ars proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Chaussures De Securite Ars'],
+      },
+      'supplier-chaussures-de-securite-mts': {
+        name: 'Chaussures De Securite Mts',
+        shortDescription: 'Chaussures De Securite Mts proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Chaussures De Securite Mts'],
+      },
+      'supplier-gant-bicolore': {
+        name: 'Gant Bicolore',
+        shortDescription: 'Gant Bicolore proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Gant Bicolore'],
+      },
+      'supplier-lunette-de-protection': {
+        name: 'Lunette De Protection',
+        shortDescription: 'Lunette De Protection proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Lunette De Protection'],
+      },
+      'supplier-masque-climax': {
+        name: 'Masque Climax',
+        shortDescription: 'Masque Climax proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Masque Climax'],
+      },
+      'supplier-sabot': {
+        name: 'Sabot',
+        shortDescription: 'Sabot proposé dans la gamme du fournisseur FastMosk. Les tailles, matières et caractéristiques sont à confirmer sur devis.',
+        galleryAlts: ['Sabot'],
       },
     },
   },
