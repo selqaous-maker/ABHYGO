@@ -6,8 +6,8 @@ import { EpiCategory, EpiProductItem } from '../types/site';
  * Do not add unverified EN/CE/chemical resistance claims without real product sheets.
  */
 export const EPI_CATALOGUE_NOTICE = {
-  eyebrow: 'Catalogue provisoire · Démonstration',
-  text: "Les catégories et fiches ci-dessous sont présentées à titre de démonstration sans confirmation de stock, de marque ou de niveau normatif. Les spécifications exactes et documents techniques sont communiqués exclusivement sur base de références confirmées lors de votre devis.",
+  eyebrow: 'Catalogue fournisseur · FastMosk',
+  text: "Les catégories et références ci-dessous présentent la gamme fournisseur FastMosk intégrée à ABHYGO. Les disponibilités et caractéristiques finales sont confirmées lors du devis.",
 } as const;
 
 export const EPI_CATEGORIES: EpiCategory[] = [
@@ -60,7 +60,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: "Ensemble d'équipements de protection individuelle",
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-gants-atelier',
@@ -78,7 +78,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Fournitures professionnelles et équipements EPI',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-masque-coque',
@@ -96,7 +96,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: "Vue complémentaire d'équipements EPI",
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-masque-pliable',
@@ -114,7 +114,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Contexte professionnel hygiène et EPI',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-lunettes-claires',
@@ -132,7 +132,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Lunettes et équipements de sécurité sur table',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-visiere-faciale',
@@ -150,7 +150,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Équipements de sécurité et hygiène professionnelle',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-casque-chantier',
@@ -168,7 +168,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Casque de sécurité et vêtements haute visibilité',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-casque-industriel',
@@ -186,7 +186,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Casque et lunettes de sécurité',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-chaussures-montantes',
@@ -204,7 +204,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Sélection générale EPI',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-chaussures-chantier',
@@ -222,7 +222,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Environnement industriel EPI',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-veste-travail',
@@ -240,7 +240,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Tenue professionnelle haute visibilité',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: 'demo-epi-gilet-signalisation',
@@ -258,7 +258,7 @@ export const EPI_DEMO_PRODUCTS: EpiProductItem[] = [
         alt: 'Équipement textile haute visibilité',
       },
     ],
-    isDemo: true,
+    isDemo: false,
   },
   {
     id: "supplier-blouse-a-usage-unique", name: "Blouse A Usage Unique", categoryId: "vetements-combinaisons",
